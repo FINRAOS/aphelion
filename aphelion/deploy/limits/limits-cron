@@ -1,0 +1,3 @@
+0 9 * * * root . /bin/env.sh; /usr/bin/python3 /opt/staging/limits-refresh.py >> /var/log/cron.log 2>&1
+0 10 * * * root . /bin/env.sh; /usr/bin/python3 /opt/staging/limits.py >> /var/log/cron.log 2>&1
+

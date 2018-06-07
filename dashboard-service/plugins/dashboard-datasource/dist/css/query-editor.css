@@ -1,0 +1,11 @@
+.generic-datasource-query-row .query-keyword {
+}
+
+a.pointer.fa.fa-remove {
+    visibility: hidden;
+}
+
+span.gf-form-label:hover a.pointer.fa.fa-remove {
+    visibility: visible;
+}
+

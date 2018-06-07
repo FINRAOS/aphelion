@@ -1,0 +1,32 @@
+{
+  "name": "FinraSource",
+  "id": "dashboard-datasource",
+  "type": "datasource",
+
+  "partials": {
+    "config": "public/app/plugins/datasource/finrasource/partials/config.html"
+  },
+
+  "metrics": true,
+  "annotations": true,
+
+  "info": {
+    "description": "Default source, and only source, to be used by the Finra dashboard",
+    "author": {
+     
+    },
+    "logos": {
+      "small": "img/simpleJson_logo.svg",
+      "large": "img/simpleJson_logo.svg"
+    },
+    "links": [
+    ],
+    "version": "1.3.4",
+    "updated": "2017-05-10"
+  },
+
+  "dependencies": {
+    "grafanaVersion": "3.x.x",
+    "plugins": [ ]
+  }
+}

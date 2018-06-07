@@ -1,0 +1,38 @@
+<assembly>
+    <formats>
+        <format>zip</format>
+    </formats>
+
+    <includeBaseDirectory>false</includeBaseDirectory>
+
+    <fileSets>
+        <fileSet>
+            <directory>deploy</directory>
+            <outputDirectory>config</outputDirectory>
+            <includes>
+                <include>*.cfg</include>
+            </includes>
+        </fileSet>
+        <fileSet>
+            <directory>deploy</directory>
+            <outputDirectory />
+            <includes>
+                <include>start.sh</include>
+            </includes>
+        </fileSet>
+        <fileSet>
+            <directory>deploy</directory>
+            <outputDirectory>bin</outputDirectory>
+            <includes>
+                <include>*.sh</include>
+            </includes>
+        </fileSet>
+        <fileSet>
+            <directory>target</directory>
+            <outputDirectory />
+            <includes>
+                <include>${project.artifactId}-*.jar</include>
+            </includes>
+        </fileSet>
+    </fileSets>
+</assembly>

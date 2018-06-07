@@ -1,0 +1,65 @@
+<query-editor-row query-ctrl="ctrl" class="generic-datasource-query-row" has-text-edit-mode="false">
+
+    <pre>{{ctrl.target}}</pre>
+    <div class="gf-form-inline">
+        <div class="gf-form ">
+            <label class="gf-form-label query-keyword">URL</label>
+            <input type="text"
+                   class="gf-form-input"
+                   ng-model="ctrl.target.namespace"
+                   spellcheck="false"
+                   style="width:auto;"
+                   placeholder="URL">
+            </input>
+        </div>
+        <div class="gf-form ">
+            <label class="gf-form-label query-keyword">URI</label>
+            <input type="text"
+                   class="gf-form-input"
+                   ng-model="ctrl.target.alias"
+                   ng-blur="ctrl.updateMetadata(ctrl.panel, ctrl.target.namespace, ctrl.target.alias) && ctrl.onChangeInternal()"
+                   spellcheck="false"
+                   style="width:auto;"
+                   ng-init="ctrl.onChangeInternal()"
+                   placeholder="URI">
+            </input>
+        </div>
+
+        <div class="gf-form-inline" ng-if="ctrl.target.alias" ng-init="ctrl.onChangeInternal()">
+            <div class="gf-form">
+                <label class="gf-form-label query-keyword">Metric Options </label>
+            </div>
+            <div class="gf-form" ng-repeat="item in ctrl.target.targets">
+            <span class="gf-form-label query-part">
+                <a ng-click="">{{item.field}}
+                    <a class="pointer fa fa-remove"
+                       ng-click="ctrl.removeParameter(ctrl.target, item)">
+                    </a>
+                </a>
+            </span>
+                <span class="gf-form-label query-part query-segment-operator"><i class="fa"></i>=</span>
+
+                <input type="text" class="gf-form-input"
+                       ng-model="item.value" spellcheck="false"
+                       ng-blur="ctrl.onChangeInternal()"
+                       style="width:auto; width:96px;"
+                       placeholder="Value">
+                </input>
+            </div>
+        </div>
+        <div class="gf-form">
+            <div class="dropdown">
+                <a class="gf-form-label dropdown-toggle query-part" data-toggle="dropdown">
+                    <i class="fa fa-plus"></i></a>
+                <ul class="dropdown-menu ">
+                    <li ng-repeat="item in ctrl.getOptions()">
+                        <a tabindex="-1" ng-href=""
+                           ng-click="ctrl.addParameter(ctrl.target, item)">{{item.name}}</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="gf-form gf-form--grow">
+            <div class="gf-form-label gf-form-label--grow"></div>
+        </div>
+</query-editor-row>

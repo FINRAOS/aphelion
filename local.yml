@@ -1,0 +1,26 @@
+version: '2'
+services:
+  aphelion-service:
+    image: finraos/aphelion-service:latest
+    environment:
+      - ASSUMED_ROLE_NAME=assumed_role_name
+      - ACCOUNT_ID_LIST=1234567891011, 1234567891012, 1234567891013, 1234567891014
+      - ASSUMED_ROLE_SESSION_NAME=limit_dashboard
+      - REGIONS=us-east-1, us-west-2
+      - AWS_DEFAULT_REGION=us-east-1
+      - REPORT_FILE_NAME=limits.csv
+      - CRON_REFRESH=* * * * *
+      - CRON_LIMITS=* * * * *
+      - AWS_DEFAULT_REGION=us-east-1
+    volumes:
+       - /Users/$USER/.aws:/root/.aws
+  dashboard-service:
+    image: finraos/aphelion-dashboard-service
+  web:
+    image: finraos/aphelion-web
+    ports:
+      - 443:8443
+    restart: always
+    links:
+     - dashboard-service
+     - aphelion-service

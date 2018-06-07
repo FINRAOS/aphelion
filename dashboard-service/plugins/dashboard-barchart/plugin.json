@@ -1,0 +1,17 @@
+{
+  "type": "panel",
+  "name": "Bar Chart",
+  "id": "barchart",
+
+  "info": {
+    "author": {
+      "name": "",
+      "url": ""
+},
+    "logos": {
+      "small": "img/icn-barchart-panel.svg",
+      "large": "img/icn-barchart-panel.svg"
+    }
+  }
+}
+

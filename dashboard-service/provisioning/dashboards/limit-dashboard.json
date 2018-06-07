@@ -1,0 +1,537 @@
+{
+  "annotations": {
+    "list": [
+      {
+        "$$hashKey": "object:151",
+        "builtIn": 1,
+        "datasource": "-- Grafana --",
+        "enable": true,
+        "hide": true,
+        "iconColor": "rgba(0, 211, 255, 1)",
+        "name": "Annotations & Alerts",
+        "type": "dashboard"
+      }
+    ]
+  },
+  "editable": false,
+  "gnetId": null,
+  "graphTooltip": 0,
+  "iteration": 1527193454498,
+  "links": [
+    {
+      "icon": "doc",
+      "tags": [],
+      "targetBlank": true,
+      "title": "Download CSV",
+      "tooltip": "Download CSV",
+      "type": "link",
+      "url": "/datapoints/csv"
+    }
+  ],
+  "panels": [
+    {
+      "cacheTimeout": null,
+      "colorBackground": true,
+      "colorValue": false,
+      "colors": [
+        "#1B5E20",
+        "#1B5E20",
+        "#1B5E20"
+      ],
+      "datasource": "QueryEngine",
+      "dd": {
+        "hasRawData": false,
+        "rawDataAlias": "null"
+      },
+      "format": "none",
+      "gauge": {
+        "maxValue": 100,
+        "minValue": 0,
+        "show": false,
+        "thresholdLabels": false,
+        "thresholdMarkers": false
+      },
+      "gridPos": {
+        "h": 2,
+        "w": 8,
+        "x": 0,
+        "y": 0
+      },
+      "id": 2,
+      "interval": null,
+      "links": [],
+      "mappingType": 1,
+      "mappingTypes": [
+        {
+          "$$hashKey": "object:250",
+          "name": "value to text",
+          "value": 1
+        },
+        {
+          "$$hashKey": "object:251",
+          "name": "range to text",
+          "value": 2
+        }
+      ],
+      "maxDataPoints": 100,
+      "nullPointMode": "connected",
+      "nullText": null,
+      "postfix": "",
+      "postfixFontSize": "50%",
+      "prefix": "",
+      "prefixFontSize": "50%",
+      "rangeMaps": [
+        {
+          "from": "null",
+          "text": "N/A",
+          "to": "null"
+        }
+      ],
+      "sparkline": {
+        "fillColor": "rgba(31, 118, 189, 0.18)",
+        "full": false,
+        "lineColor": "rgb(31, 120, 193)",
+        "show": false
+      },
+      "tableColumn": "",
+      "targets": [
+        {
+          "$$hashKey": "object:238",
+          "alias": "datapoints/timeseries",
+          "namespace": "/",
+          "refId": "A",
+          "targets": [
+            {
+              "$$hashKey": "object:246",
+              "field": "key",
+              "name": "key",
+              "type": "string",
+              "value": "lt=80"
+            }
+          ]
+        }
+      ],
+      "thresholds": "",
+      "title": "Healthy",
+      "transparent": false,
+      "type": "singlestat",
+      "valueFontSize": "80%",
+      "valueMaps": [
+        {
+          "$$hashKey": "object:253",
+          "op": "=",
+          "text": "N/A",
+          "value": "null"
+        }
+      ],
+      "valueName": "current"
+    },
+    {
+      "cacheTimeout": null,
+      "colorBackground": true,
+      "colorValue": false,
+      "colors": [
+        "#B71C1C",
+        "#B71C1C",
+        "#B71C1C"
+      ],
+      "datasource": "QueryEngine",
+      "dd": {
+        "hasRawData": false,
+        "rawDataAlias": "null"
+      },
+      "format": "none",
+      "gauge": {
+        "maxValue": 100,
+        "minValue": 0,
+        "show": false,
+        "thresholdLabels": false,
+        "thresholdMarkers": false
+      },
+      "gridPos": {
+        "h": 2,
+        "w": 8,
+        "x": 8,
+        "y": 0
+      },
+      "id": 3,
+      "interval": null,
+      "links": [],
+      "mappingType": 1,
+      "mappingTypes": [
+        {
+          "name": "value to text",
+          "value": 1
+        },
+        {
+          "name": "range to text",
+          "value": 2
+        }
+      ],
+      "maxDataPoints": 100,
+      "nullPointMode": "connected",
+      "nullText": null,
+      "postfix": "",
+      "postfixFontSize": "50%",
+      "prefix": "",
+      "prefixFontSize": "50%",
+      "rangeMaps": [
+        {
+          "from": "null",
+          "text": "N/A",
+          "to": "null"
+        }
+      ],
+      "sparkline": {
+        "fillColor": "rgba(31, 118, 189, 0.18)",
+        "full": false,
+        "lineColor": "rgb(31, 120, 193)",
+        "show": false
+      },
+      "tableColumn": "",
+      "targets": [
+        {
+          "alias": "datapoints/timeseries",
+          "namespace": "/",
+          "refId": "A",
+          "targets": [
+            {
+              "field": "key",
+              "name": "key",
+              "type": "string",
+              "value": "gt=79"
+            }
+          ]
+        }
+      ],
+      "thresholds": "",
+      "title": "Exceeding",
+      "type": "singlestat",
+      "valueFontSize": "80%",
+      "valueMaps": [
+        {
+          "op": "=",
+          "text": "N/A",
+          "value": "null"
+        }
+      ],
+      "valueName": "current"
+    },
+    {
+      "cacheTimeout": null,
+      "colorBackground": false,
+      "colorValue": false,
+      "colors": [
+        "#508642",
+        "#508642",
+        "#508642"
+      ],
+      "datasource": "QueryEngine",
+      "dd": {
+        "hasRawData": false,
+        "rawDataAlias": "null"
+      },
+      "format": "none",
+      "gauge": {
+        "maxValue": 100,
+        "minValue": 0,
+        "show": false,
+        "thresholdLabels": false,
+        "thresholdMarkers": false
+      },
+      "gridPos": {
+        "h": 2,
+        "w": 8,
+        "x": 16,
+        "y": 0
+      },
+      "id": 4,
+      "interval": null,
+      "links": [],
+      "mappingType": 1,
+      "mappingTypes": [
+        {
+          "name": "value to text",
+          "value": 1
+        },
+        {
+          "name": "range to text",
+          "value": 2
+        }
+      ],
+      "maxDataPoints": 100,
+      "nullPointMode": "connected",
+      "nullText": null,
+      "postfix": "",
+      "postfixFontSize": "50%",
+      "prefix": "",
+      "prefixFontSize": "50%",
+      "rangeMaps": [
+        {
+          "from": "null",
+          "text": "N/A",
+          "to": "null"
+        }
+      ],
+      "sparkline": {
+        "fillColor": "rgba(31, 118, 189, 0.18)",
+        "full": false,
+        "lineColor": "rgb(31, 120, 193)",
+        "show": false
+      },
+      "tableColumn": "",
+      "targets": [
+        {
+          "alias": "datapoints/timeseries",
+          "namespace": "/",
+          "refId": "A",
+          "targets": [
+            {
+              "field": "key",
+              "name": "key",
+              "type": "string",
+              "value": "total"
+            }
+          ]
+        }
+      ],
+      "thresholds": "",
+      "title": "Total",
+      "type": "singlestat",
+      "valueFontSize": "80%",
+      "valueMaps": [
+        {
+          "op": "=",
+          "text": "N/A",
+          "value": "null"
+        }
+      ],
+      "valueName": "current"
+    },
+    {
+      "aliasColors": {},
+      "cacheTimeout": null,
+      "datasource": "QueryEngine",
+      "dataspecType": "map",
+      "dd": {
+        "hasRawData": false,
+        "rawDataAlias": "null",
+        "rowsPerPage": 10
+      },
+      "decimals": 0,
+      "format": "percent",
+      "gridPos": {
+        "h": 8,
+        "w": 24,
+        "x": 0,
+        "y": 2
+      },
+      "id": 10,
+      "interval": null,
+      "legend": {
+        "show": false,
+        "values": true
+      },
+      "legendRight": true,
+      "legendTable": true,
+      "links": [],
+      "maxDataPoints": 3,
+      "nullPointMode": "connected",
+      "sources": {
+        "PetDemos": [
+          "limitBarChart"
+        ]
+      },
+      "stack": false,
+      "targets": [
+        {
+          "alias": "datapoints/barchart",
+          "namespace": "/",
+          "refId": "A"
+        }
+      ],
+      "title": "$accountName",
+      "tooltip": {
+        "showAllDetails": false
+      },
+      "type": "barchart",
+      "valueName": "current",
+      "xaxis": {
+        "max": null,
+        "min": null,
+        "show": false
+      },
+      "yaxis": {
+        "label": null,
+        "max": null,
+        "min": null,
+        "show": true
+      }
+    },
+    {
+      "columns": [],
+      "dataspecType": "drilldown",
+      "dd": {
+        "hasRawData": false,
+        "rawDataAlias": "null"
+      },
+      "fontSize": "100%",
+      "gridPos": {
+        "h": 11,
+        "w": 24,
+        "x": 0,
+        "y": 10
+      },
+      "id": 8,
+      "links": [],
+      "pageIndex": 0,
+      "pageSize": 10,
+      "scopedVars": [],
+      "scroll": true,
+      "showHeader": true,
+      "sort": {
+        "col": 7,
+        "desc": true
+      },
+      "styles": [
+        {
+          "alias": "Time",
+          "dateFormat": "YYYY-MM-DD HH:mm:ss",
+          "pattern": "Time",
+          "type": "date"
+        },
+        {
+          "alias": "",
+          "colorMode": null,
+          "colors": [
+            "rgba(245, 54, 54, 0.9)",
+            "rgba(237, 129, 40, 0.89)",
+            "rgba(50, 172, 45, 0.97)"
+          ],
+          "decimals": 2,
+          "pattern": "Account Name",
+          "thresholds": [],
+          "type": "hidden",
+          "unit": "short"
+        },
+        {
+          "alias": "",
+          "colorMode": "cell",
+          "colors": [
+            "rgba(50, 172, 45, 0)",
+            "rgba(237, 129, 40, 0.89)",
+            "rgb(188,27,36)"
+          ],
+          "dateFormat": "YYYY-MM-DD HH:mm:ss",
+          "decimals": 0,
+          "pattern": "Usage",
+          "thresholds": [
+            "75",
+            "80"
+          ],
+          "type": "number",
+          "unit": "percent"
+        }
+      ],
+      "targets": [
+        {
+          "alias": "datapoints",
+          "namespace": "/",
+          "refId": "A",
+          "uri": "datapoints",
+          "url": "/"
+        }
+      ],
+      "title": "$accountName data",
+      "transparent": false,
+      "type": "dashboard-table"
+    }
+  ],
+  "schemaVersion": 16,
+  "style": "dark",
+  "tags": [],
+  "templating": {
+    "list": [
+      {
+        "allValue": "blank = ALL",
+        "current": {
+          "text": "All",
+          "value": "$__all"
+        },
+        "datasource": "QueryEngine",
+        "hide": 0,
+        "includeAll": true,
+        "label": "Account",
+        "multi": false,
+        "name": "accountName",
+        "options": [],
+        "query": "/datapoints/accounts",
+        "refresh": 1,
+        "regex": "",
+        "sort": 1,
+        "tagValuesQuery": "",
+        "tags": [],
+        "tagsQuery": "",
+        "type": "query",
+        "useTags": false
+      },
+      {
+        "allValue": null,
+        "current": {
+          "text": "-",
+          "value": "-"
+        },
+        "datasource": "QueryEngine",
+        "hide": 0,
+        "includeAll": false,
+        "label": "Region",
+        "multi": false,
+        "name": "region",
+        "options": [],
+        "query": "/datapoints/regions",
+        "refresh": 1,
+        "regex": "",
+        "sort": 0,
+        "tagValuesQuery": "",
+        "tags": [],
+        "tagsQuery": "",
+        "type": "query",
+        "useTags": false
+      }
+    ]
+  },
+  "time": {
+    "from": "now-6h",
+    "to": "now"
+  },
+  "timepicker": {
+    "hidden": true,
+    "refresh_intervals": [
+      "5s",
+      "10s",
+      "30s",
+      "1m",
+      "5m",
+      "15m",
+      "30m",
+      "1h",
+      "2h",
+      "1d"
+    ],
+    "time_options": [
+      "5m",
+      "15m",
+      "1h",
+      "6h",
+      "12h",
+      "24h",
+      "2d",
+      "7d",
+      "30d"
+    ]
+  },
+  "timezone": "",
+  "title": "Limit Dashboard",
+  "uid": "l1m1td45hb04rd",
+  "version": 1
+}

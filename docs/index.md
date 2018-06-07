@@ -1,9 +1,9 @@
 # Introduction
 
 ## What is Aphelion?
-Aphelion is a dashboard to visualize AWS services usage limits for your AWS accounts
+Aphelion is a dashboard to visualize AWS service limits usage for your AWS accounts
 
-[![Aphelion dashboard](docs/images/dashboard.png)](docs/images/dashboard.png)
+[![Aphelion dashboard](images/dashboard.png)](images/dashboard.png)
 
 ## Overview
 Aphelion is used to collect AWS limits across multiple accounts. It uses
@@ -17,10 +17,3 @@ the particular service exposes the current limit values via API calls.
 - Filter dashboard display by Region
 - Highlight services that are reaching max limit
 - Download CSV report
-
-## Documentation
-- [Overview](docs/index.md)
-- [AWS IAM Role Setup](docs/AWS-Setup.md)
-- [Local Setup](docs/Local-Setup.md)
-- [Deploy](docs/Deploy.md)
-- [Troubleshooting](docs/Troubleshooting.md)

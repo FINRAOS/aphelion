@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg width="100px" height="100px" viewBox="0 0 100 100" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 40.1 (33804) - http://www.bohemiancoding.com/sketch -->
+    <title>Group 5</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Desktop" transform="translate(-477.000000, -532.000000)">
+            <g id="Group-5" transform="translate(477.000000, 532.000000)">
+                <g id="Page-1" fill="#00AEEF">
+                    <path d="M23,14 L23,0 L0,0 C21.1482745,5.8334484 23,14 23,14" id="Fill-1"></path>
+                    <polygon id="Fill-3" points="25 4 25 25 46 4.01368911"></polygon>
+                </g>
+                <rect id="Rectangle-2" fill="#B2DBB9" x="4" y="61" width="21" height="39"></rect>
+                <rect id="Rectangle-2" fill="#16A085" x="4" y="61" width="21" height="30"></rect>
+                <rect id="Rectangle-2" fill="#1A83BC" x="29" y="33" width="21" height="67"></rect>
+                <rect id="Rectangle-2" fill="#003C68" x="29" y="33" width="21" height="11"></rect>
+                <rect id="Rectangle-2" fill="#004F91" x="29" y="44" width="21" height="30"></rect>
+                <polygon id="Rectangle-2" fill="#8CD0BC" points="54 48 75 48 75 100 54 100"></polygon>
+                <polygon id="Rectangle-2" fill="#16A085" points="54 48 75 48 75 58 54 58"></polygon>
+                <rect id="Rectangle-2" fill="#0063A6" x="79" y="7" width="21" height="93"></rect>
+                <rect id="Rectangle-2" fill="#003C68" x="79" y="7" width="21" height="53"></rect>
+                <rect id="Rectangle-2" fill="#004F91" x="79" y="60" width="21" height="30"></rect>
+            </g>
+        </g>
+    </g>
+</svg>

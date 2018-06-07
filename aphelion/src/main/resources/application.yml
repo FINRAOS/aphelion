@@ -1,0 +1,15 @@
+#Global
+cloud.aws:
+  region.static: us-east-1
+
+spring:
+  profiles.active: local
+
+---
+#Local Profile
+spring:
+  profiles: local
+---
+#Dev Profile
+spring:
+  profiles: dev
