@@ -1,2 +1,2 @@
-# aphelion
-Dashboard to visualize the AWS service limit usage for your AWS accounts
+# Aphelion
+Dashboard to visualize the AWS serviceS usage limits for your AWS accounts
