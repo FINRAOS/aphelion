@@ -4,7 +4,6 @@
 Must be able to run application with a role that is able to assume ```ASSUMED_ROLE_NAME```
 with proper permissions to create report.
 
-
 Since trusted advisor must be told to refresh its values, the script
 limits-refresh.py must be run some time in advance of the limits collection.
 Generally, 1 hour before hand is a safe value, but your mileage may vary.
