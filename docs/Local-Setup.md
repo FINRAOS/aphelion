@@ -39,9 +39,9 @@ services:
   aphelion-service:
     image: finraos/aphelion-service:latest
     environment:
-      - ASSUMED_ROLE_NAME=Assumed_Role_Name
+      - ASSUMED_ROLE_NAME=assumed_role_name
       - ACCOUNT_ID_LIST=123456789101, 123456789102, 123456789103
-      - ASSUMED_ROLE_SESSION_NAME=aphelion_role
+      - ASSUMED_ROLE_SESSION_NAME=limit_dashboard
       - REGIONS=us-east-1, us-east-2, us-west-1
       - REPORT_FILE_NAME=limits.csv
       - CRON_REFRESH=* * * * *
