@@ -1,4 +1,4 @@
-![aphelion](/img/logo.png)
+<img src="/img/logo.png" alt="drawing" width="400px"/>
 
 ## What is Aphelion?
 Aphelion is a dashboard to visualize AWS services usage limits for your AWS accounts
