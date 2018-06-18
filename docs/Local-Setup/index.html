@@ -403,12 +403,12 @@ and get a TA report.</p>
 <tr>
 <td>ASSUMED_ROLE_SESSION_NAME</td>
 <td>Role session name to pass when assuming the role</td>
-<td>1234567891011, 1234567891012, 1234567891013, 1234567891014</td>
+<td>limit_dashboard</td>
 </tr>
 <tr>
 <td>ACCOUNT_ID_LIST</td>
 <td>Comma separated list of account IDs to interrogate. Will accept with or without leading and/or trailing spaces</td>
-<td>limit_dashboard</td>
+<td>1234567891011, 1234567891012, 1234567891013, 1234567891014</td>
 </tr>
 <tr>
 <td>REGIONS</td>
@@ -443,9 +443,9 @@ and get a TA report.</p>
   <span class="l l-Scalar l-Scalar-Plain">aphelion-service</span><span class="p p-Indicator">:</span>
     <span class="l l-Scalar l-Scalar-Plain">image</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">finraos/aphelion-service:latest</span>
     <span class="l l-Scalar l-Scalar-Plain">environment</span><span class="p p-Indicator">:</span>
-      <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">ASSUMED_ROLE_NAME=Assumed_Role_Name</span>
+      <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">ASSUMED_ROLE_NAME=assumed_role_name</span>
       <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">ACCOUNT_ID_LIST=123456789101, 123456789102, 123456789103</span>
-      <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">ASSUMED_ROLE_SESSION_NAME=aphelion_role</span>
+      <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">ASSUMED_ROLE_SESSION_NAME=limit_dashboard</span>
       <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">REGIONS=us-east-1, us-east-2, us-west-1</span>
       <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">REPORT_FILE_NAME=limits.csv</span>
       <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">CRON_REFRESH=* * * * *</span>
