@@ -4,6 +4,7 @@
 Must be able to run application with a role that is able to assume ```ASSUMED_ROLE_NAME```
 with proper permissions to create report.
 
+
 Since trusted advisor must be told to refresh its values, the script
 limits-refresh.py must be run some time in advance of the limits collection.
 Generally, 1 hour before hand is a safe value, but your mileage may vary.
@@ -23,8 +24,8 @@ Aphelion requires the following properties to be set in order to run.
 | Name                      | Description                                                                                                                           | Example                                                    |
 |---------------------------|---------------------------------------------------------------------------------------------------------------------------------------|------------------------------------------------------------|
 | ASSUMED_ROLE_NAME         | The name of the role to assume to inspect an account. This needs to be the same across all target accounts                            | assumed_role_name                                          |
-| ASSUMED_ROLE_SESSION_NAME | Role session name to pass when assuming the role                                                                                      | limit_dashboard |
-| ACCOUNT_ID_LIST           | Comma separated list of account IDs to interrogate. Will accept with or without leading and/or trailing spaces                        | 1234567891011, 1234567891012, 1234567891013, 1234567891014                                            |
+| ASSUMED_ROLE_SESSION_NAME | Role session name to pass when assuming the role                                                                                      | 1234567891011, 1234567891012, 1234567891013, 1234567891014 |
+| ACCOUNT_ID_LIST           | Comma separated list of account IDs to interrogate. Will accept with or without leading and/or trailing spaces                        | limit_dashboard                                            |
 | REGIONS                   | Regions of interest. TA limits not in this list will be dropped, and non TA limit checks will only be performed in the regions listed | us-east-1, us-east-2                                       |
 | REPORT_FILE_NAME          | Name of the CSV file to create with the results                                                                                       | limits.csv                                                 |
 | CRON_REFRESH              | Cron schedule to run limits-refresh.  Must run about an hour before CRON_LIMITS                                                       | 0 2 * * *                                                  |
@@ -39,9 +40,9 @@ services:
   aphelion-service:
     image: finraos/aphelion-service:latest
     environment:
-      - ASSUMED_ROLE_NAME=assumed_role_name
+      - ASSUMED_ROLE_NAME=Assumed_Role_Name
       - ACCOUNT_ID_LIST=123456789101, 123456789102, 123456789103
-      - ASSUMED_ROLE_SESSION_NAME=limit_dashboard
+      - ASSUMED_ROLE_SESSION_NAME=aphelion_role
       - REGIONS=us-east-1, us-east-2, us-west-1
       - REPORT_FILE_NAME=limits.csv
       - CRON_REFRESH=* * * * *

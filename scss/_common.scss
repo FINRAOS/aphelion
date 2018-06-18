@@ -1,0 +1,170 @@
+html {
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box
+}
+*, *:before, *:after {
+  -webkit-box-sizing:inherit;
+  box-sizing:inherit;
+}
+
+body {
+  background-color: $black;
+  color: $text;
+  margin: 0;
+  text-align: center;
+}
+
+section {
+  display: block;
+}
+
+main {
+  > section {
+    padding: 50px 20% 100px;
+  }
+}
+
+footer {
+  font-size: $font-size-legal;
+  position: relative;
+
+  &:after,
+  &:before {
+    background-color: $primary;
+
+    content: "";
+    height: 10px;
+    left: 0;
+    position: absolute;
+    right: 0;
+    top: -10px;
+  }
+  &:after {
+    @include background-gradient;
+  }
+  #copyright {
+    color: $white-low-transparency;
+    margin-top: 1em;
+  }
+  #footer-container {
+    padding: 2em 50px;
+  }
+  img {
+    height: 30px;
+  }
+
+  @include for-tablet-portrait-up {
+    #copyright {
+      display: flex;
+      order: 1;
+      margin-top: 0;
+      padding-left: 50px;
+      text-align: left;
+
+      div {
+        flex: 1;
+      }
+      img {
+        margin: 0 4em 0 0;
+      }
+    }
+    #footer-container {
+      display: flex;
+      justify-content: space-between;
+    }
+  }
+}
+
+footer,
+header,
+#splash {
+  align-items: center;
+  display: flex;
+  justify-content: center;
+}
+
+#footer-container,
+#header-container,
+#splash-container {
+  flex: 1;
+  height: 100%;
+  padding: 0 50px;
+  position: relative;
+  max-width: $max-width;
+}
+
+.section-light-bg {
+  background-color: map-get($section-light-bg, bg-color);
+  color: map-get($section-light-bg, txt-color);
+
+  a {
+    @include link-color(
+      $d:map-get($section-light-bg, primary)
+      );
+  }
+  h1 {
+    color: map-get($section-light-bg, accent);
+  }
+}
+
+#finra-tech {
+  @extend .link-color-dark-background;
+
+  font-family: $font-family-1;
+  font-weight: 900;
+  height: 48px;
+  line-height: 48px;
+  text-align: left;
+  text-transform: uppercase;
+}
+
+#get-started {
+  background-color: $primary;
+  text-align: center;
+
+  p {
+    margin-bottom: 50px;
+  }
+}
+
+#related-products {
+  @extend .section-light-bg;
+
+  img {
+    height: 80px;
+  }
+  ul li {
+    margin-top: 2em;
+    padding-left: 0;
+  }
+
+  @include for-tablet-portrait-up {
+    ul li:not(:first-child) {
+      padding-left: 4em;
+    }
+  }
+}
+
+#social-links {
+  @extend .link-color-dark-background;
+
+  a {
+    margin: 0;
+
+    span {
+      border-color: transparent;
+      font-size: $font-size-title;
+      padding: 0 0.5em;
+    }
+  }
+
+  @include for-tablet-portrait-up {
+    order: 2;
+
+    a {
+      span {
+        font-size: $font-size-body;
+      }
+    }
+  }
+}

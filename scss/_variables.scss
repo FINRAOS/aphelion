@@ -1,0 +1,40 @@
+// Borders
+$border-radius: 0;
+
+// Breakpoints
+$bp-tablet-portrait: 768px;
+$max-width: 1440px;
+
+// Buttons
+$link-color: #fff;
+
+// Typography
+$font-family-1: "Avenir", "Helvetica Neue", Helvetica, Arial, sans-serif;
+$font-family-2: Roboto, "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
+$line-height-headline: 1.2;
+$line-height-body: 1.6;
+
+// -- Sizes
+$font-size-base: 16px;
+$font-size-display-4: 11.2rem;
+$font-size-display-3: 5.6rem;
+$font-size-display-2: 3.75rem;  // 60px
+$font-size-display-1: 3rem;     // 48px
+$font-size-headline: 2.25rem;   // 36px
+$font-size-title: 1.5rem;       // 24px
+$font-size-subhead: 1.125rem;   // 18px
+$font-size-body: 1rem;
+$font-size-caption: 0.875rem;   // 14px
+$font-size-legal: 0.625rem;     // 10px
+
+$mobile-min-height: 48px;
+
+// -- Weights
+$font-weight-light: 100;
+$font-weight-normal: 400;
+$font-weight-medium: 500;
+$font-weight-bold: 700;
+$font-weight-black: 900;
+
+// Icons
+$icon-size: rem(2.4);

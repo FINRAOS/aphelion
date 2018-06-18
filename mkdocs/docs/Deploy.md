@@ -43,7 +43,7 @@ services:
 ```
 
 !!! tip 
-    You can add AWS log configuration properties to the docker-compose file
+    You can AWS log configuration properties to the docker-compose file
 
 
 ## Process

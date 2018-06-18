@@ -1,0 +1,71 @@
+.btn-no-style {
+  background-color: transparent;
+  border-color: transparent;
+  margin-top: 0.5em;
+
+  & + & {
+    margin-left: 0.5em;
+  }
+  &:focus {
+    outline: none;  // Override Chrome style
+  }
+}
+
+a, .btn-link {
+  @include link-color;
+
+  font-weight: $font-weight-medium;
+  position: relative;
+  text-decoration: none;
+  transition: all 0.3s;
+}
+
+.btn {
+  border-radius: $border-radius;
+  display: inline-block;
+  font-family: $font-family-1;
+  font-size: $font-size-caption;
+  font-weight: $font-weight-medium;
+  height: 36px;
+  line-height: 36px;
+  min-width: 36px;
+  padding: 0 1em;
+  position: relative;
+  text-transform: uppercase;
+
+  &:hover {
+    cursor: pointer;
+  }
+}
+
+.btn-primary {
+  @extend .btn-no-style;
+  @extend .perspective;
+
+  span {
+    @extend .btn;
+    @extend .btn-8;
+    @include button-primary-color;
+
+    border-style: solid;
+    border-width: 1px;
+  }
+}
+
+.btn-secondary {
+  @extend .btn-primary;
+
+  span {
+    @include button-secondary-color;
+  }
+}
+
+.btn-icon {
+  @extend .btn-secondary;
+
+  span {
+    line-height: 36px;
+    padding: 0;
+    text-align: center;
+  }
+}

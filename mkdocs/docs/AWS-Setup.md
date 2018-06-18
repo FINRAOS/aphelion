@@ -1,14 +1,10 @@
 # AWS IAM role Setup
 
 ## Setting your AWS environment
-Aphelion requires the application to assume role to a target IAM role with the same name across all accounts in order to
-create limits report.  The source role that is used to deploy Aphelion must have proper permission to call 
-`sts:assume-role` role on each target role.  Each target role must also have a trust relationship with the source role 
-to allow itself to be assumed. For more information regarding AWS assume role, refer to: 
-https://docs.aws.amazon.com/cli/latest/userguide/cli-roles.html 
+Aphelion requires an IAM role with the same name across all accounts in order to create limits report.  
 
-### IAM Assume Role Permissions
-The IAM role in each account must contain proper permissions to collect the data to generate the limits report.
+### IAM Assume Role
+IAM must contain proper permissions to obtain create limits report.
 
 ### Example IAM permissions
 ```JSON

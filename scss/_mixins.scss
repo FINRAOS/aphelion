@@ -1,0 +1,355 @@
+// Background gradient color
+@mixin background-gradient($c1:$accent1, $c2:rgba(red($primary-rgb),green($primary-rgb),blue($primary-rgb),0), $c3:$accent2) {
+  background: linear-gradient(135deg, $c1 0%, $c2 50%),
+              linear-gradient(315deg, $c3 0%, $c2 50%);
+}
+
+// Breakpoints
+@mixin for-tablet-portrait-down {
+  @media ( max-width: $bp-tablet-portrait ) { @content; }
+}
+@mixin for-tablet-portrait-up {
+  @media ( min-width: $bp-tablet-portrait ) { @content; }
+}
+
+// Button (primary) color
+@mixin button-primary-color($d:rgba($white, 0.85), $h:$white, $f:darken($d, 10%), $t:$primary) {
+  &, &:link, &:visited {
+    background-color: $d;
+    border-color: $d;
+    color: $t;
+  }
+  &:hover {
+    background-color: $h;
+    border-color: $h;
+    color: $t;
+  }
+  &:active, &:focus {
+    background-color: $f;
+    border-color: $f;
+    color: $t;
+  }
+}
+
+// Button (secondary) color
+@mixin button-secondary-color($d:rgba($white, 0.85), $h:$white, $f:darken($d, 10%)) {
+  &, &:link, &:visited {
+    background-color: transparent;
+    border-color: $d;
+    color: $d;
+  }
+  &:hover {
+    background-color: transparent;
+    border-color: $h;
+    color: $h;
+  }
+  &:active, &:focus {
+    background-color: transparent;
+    border-color: $f;
+    color: $f;
+  }
+}
+
+// Link color
+@mixin link-color($d:$accent2, $h:rgba($d, 0.7), $f:darken($d, 10%)) {
+  &, &:link, &:visited {
+    color: $d;
+  }
+  &:hover {
+    color: $h;
+  }
+  &:active, &:focus {
+    color: $f;
+  }
+}
+
+.link-color-dark-background {
+  a {
+    @include link-color($white, $primary, darken($white, 70%));
+  }
+}
+
+
+// EFFECTS
+// =======
+
+// Bracket hover effect
+// --------------------
+@mixin bracket-effect {
+  &::before,
+  &::after {
+    display: inline-block;
+  	opacity: 0;
+  	-webkit-transition: -webkit-transform 0.3s, opacity 0.2s;
+  	-moz-transition: -moz-transform 0.3s, opacity 0.2s;
+  	transition: transform 0.3s, opacity 0.2s;
+  }
+
+  &::before {
+  	margin-right: 10px;
+  	content: '[';
+  	-webkit-transform: translateX(20px);
+  	-moz-transform: translateX(20px);
+  	transform: translateX(20px);
+  }
+
+  &::after {
+  	margin-left: 10px;
+  	content: ']';
+  	-webkit-transform: translateX(-20px);
+  	-moz-transform: translateX(-20px);
+  	transform: translateX(-20px);
+  }
+
+  &:hover,
+  &:focus {
+    &::before,
+    &::after {
+      	opacity: 1;
+      	-webkit-transform: translateX(0px);
+      	-moz-transform: translateX(0px);
+      	transform: translateX(0px);
+    }
+  }
+} // End bracket hover effect
+
+// 3D Hover effect
+// ---------------
+.perspective {
+  position: relative;
+	margin: 0;
+	padding: 0;
+	z-index: 1;
+	-webkit-perspective: 800px;
+	-moz-perspective: 800px;
+	perspective: 800px;
+	display: inline-block;
+}
+
+.btn-8 {
+	display: block;
+	outline: 1px solid transparent;  // FF jagged edges fix
+	-webkit-transform-style: preserve-3d;
+	-moz-transform-style: preserve-3d;
+	transform-style: preserve-3d;
+  transition: all 0.3s;
+
+  &:after {
+    content: '';
+  	position: absolute;
+  	z-index: -1;
+  	-webkit-transition: all 0.3s;
+  	-moz-transition: all 0.3s;
+  	transition: all 0.3s;
+  	width: 100%;
+  	height: 40%;
+  	left: 0;
+  	top: 100%;
+  	background: $black-high-transparency;
+  	-webkit-transform-origin: 0% 0%;
+  	-webkit-transform: rotateX(-90deg);
+  	-moz-transform-origin: 0% 0%;
+  	-moz-transform: rotateX(-90deg);
+  	-ms-transform-origin: 0% 0%;
+  	-ms-transform: rotateX(-90deg);
+  	transform-origin: 0% 0%;
+  	transform: rotateX(-90deg);
+  }
+  &:hover {
+  	-webkit-transform: rotateX(15deg);
+  	-moz-transform: rotateX(15deg);
+  	-ms-transform: rotateX(15deg);
+  	transform: rotateX(15deg);
+  }
+} // End 3D Hover effect
+
+// Text fill effect
+// ----------------
+// Works for one liners only
+.text-fill-effect {
+	color: #0972b4;
+	text-shadow: none;
+
+  &::before {
+  	position: absolute;
+  	top: 0;
+  	left: 0;
+  	overflow: hidden;
+  	max-width: 0;
+  	border-bottom: 2px solid #fff;
+  	color: #808080;
+  	content: attr(data-hover);
+  	-webkit-transition: max-width 0.5s;
+  	-moz-transition: max-width 0.5s;
+  	transition: max-width 0.5s;
+  }
+
+  &:hover::before,
+  &:focus::before {
+  	max-width: 100%;
+  }
+} // End Text fill effect
+
+// Slide down effect
+// -----------------
+// http://www.justinaguilar.com/animations/
+.slideDown {
+	animation-name: slideDown;
+	-webkit-animation-name: slideDown;
+
+	animation-duration: 1s;
+	-webkit-animation-duration: 1s;
+
+	animation-timing-function: ease;
+	-webkit-animation-timing-function: ease;
+}
+
+@keyframes slideDown {
+	0% {
+		transform: translateY(-100%);
+	}
+	50%{
+		transform: translateY(8%);
+	}
+	65%{
+		transform: translateY(-4%);
+	}
+	80%{
+		transform: translateY(4%);
+	}
+	95%{
+		transform: translateY(-2%);
+	}
+	100% {
+		transform: translateY(0%);
+	}
+}
+
+@-webkit-keyframes slideDown {
+	0% {
+		-webkit-transform: translateY(-100%);
+	}
+	50%{
+		-webkit-transform: translateY(8%);
+	}
+	65%{
+		-webkit-transform: translateY(-4%);
+	}
+	80%{
+		-webkit-transform: translateY(4%);
+	}
+	95%{
+		-webkit-transform: translateY(-2%);
+	}
+	100% {
+		-webkit-transform: translateY(0%);
+	}
+} // End Slide down effect
+
+// Slide up effect
+// ---------------
+// http://www.justinaguilar.com/animations/
+.slideUp {
+	animation-name: slideUp;
+	-webkit-animation-name: slideUp;
+
+	animation-duration: 1s;
+	-webkit-animation-duration: 1s;
+
+	animation-timing-function: ease;
+	-webkit-animation-timing-function: ease;
+}
+
+@keyframes slideUp {
+	0% {
+		transform: translateY(0%);
+	}
+	50%{
+		transform: translateY(-108%);
+	}
+	65%{
+		transform: translateY(-96%);
+	}
+	80%{
+		transform: translateY(-104%);
+	}
+	95%{
+		transform: translateY(-98%);
+	}
+	100% {
+		transform: translateY(0%);
+	}
+}
+
+@-webkit-keyframes slideUp {
+	0% {
+		-webkit-transform: translateY(0%);
+	}
+	50%{
+		-webkit-transform: translateY(-108%);
+	}
+	65%{
+		-webkit-transform: translateY(-96%);
+	}
+	80%{
+		-webkit-transform: translateY(-104%);
+	}
+	95%{
+		-webkit-transform: translateY(-98%);
+	}
+	100% {
+		-webkit-transform: translateY(0%);
+	}
+} // End Slide up effect
+
+// Fade in effect
+// --------------
+// http://www.justinaguilar.com/animations/
+.fadeIn {
+	animation-name: fadeIn;
+	-webkit-animation-name: fadeIn;
+
+	animation-duration: 1.5s;
+	-webkit-animation-duration: 1.5s;
+
+	animation-timing-function: ease-in-out;
+	-webkit-animation-timing-function: ease-in-out;
+
+	visibility: visible;
+}
+
+@keyframes fadeIn {
+	0% {
+		transform: scale(0);
+		opacity: 0;
+	}
+	60% {
+		transform: scale(1.1);
+	}
+	80% {
+		transform: scale(0.9);
+		opacity: 1;
+	}
+	100% {
+		transform: scale(1);
+		opacity: 1;
+	}
+}
+
+@-webkit-keyframes fadeIn {
+	0% {
+		-webkit-transform: scale(0);
+		opacity: 0;
+	}
+	60% {
+		-webkit-transform: scale(1.1);
+	}
+	80% {
+		-webkit-transform: scale(0.9);
+		opacity: 1;
+	}
+	100% {
+		-webkit-transform: scale(1);
+		opacity: 1;
+	}
+} // End Fade in effect

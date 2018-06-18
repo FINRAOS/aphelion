@@ -1,0 +1,54 @@
+// Definition list
+// Used for features
+dl {
+  margin: 3em 0 4em;
+  text-align: left;
+
+  &.two-cols {
+    @media (min-width: 768px) {
+      display: grid;
+      grid-template-columns: 200px 2fr;
+    }
+
+    span {
+      align-items: center;      // cross-axis/vertical
+      display: flex;
+      grid-column-start: 1;
+      grid-column-end: 2;
+      grid-row-start: 1;
+      grid-row-end: 3;
+      justify-content: center;  // main axis/horizontal
+      padding-bottom: 2em;
+
+      @media (min-width: 768px) {
+        padding-bottom: 0;
+        padding-right: 4em;
+      }
+    }
+  }
+
+  dd {
+    margin: 0;
+  }
+  dt {
+    font-size: $font-size-subhead;
+    font-weight: $font-weight-bold;
+    margin-bottom: 0.5em;
+  }
+}
+
+// Unordered list
+// Used for breadcrumbs, page anchors, related products
+ul.no-style {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+
+  li {
+    display: inline-block;
+
+    &:not(:first-child) {
+      padding-left: 1em;
+    }
+  }
+}

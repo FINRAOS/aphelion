@@ -1,0 +1,164 @@
+{
+    "docs": [
+        {
+            "location": "/",
+            "text": "Introduction\n\u00b6\n\n\nWhat is Aphelion?\n\u00b6\n\n\nAphelion is a dashboard to visualize AWS service limits usage for your AWS accounts\n\n\n\n\nOverview\n\u00b6\n\n\nAphelion is used to collect AWS limits across multiple accounts. It uses\na combination of Trusted Advisor (TA) as well as direct resource APIs to collect\nlimits for most of the AWS resources where the limit is either in TA, or\nthe particular service exposes the current limit values via API calls.\n\n\nFeatures\n\u00b6\n\n\n\n\nView dashboard with limits and usage for all of your AWS accounts\n\n\nFilter dashboard display by Account number\n\n\nFilter dashboard display by Region\n\n\nHighlight services that are reaching max limit\n\n\nDownload CSV report",
+            "title": "Overview"
+        },
+        {
+            "location": "/#introduction",
+            "text": "",
+            "title": "Introduction"
+        },
+        {
+            "location": "/#what-is-aphelion",
+            "text": "Aphelion is a dashboard to visualize AWS service limits usage for your AWS accounts",
+            "title": "What is Aphelion?"
+        },
+        {
+            "location": "/#overview",
+            "text": "Aphelion is used to collect AWS limits across multiple accounts. It uses\na combination of Trusted Advisor (TA) as well as direct resource APIs to collect\nlimits for most of the AWS resources where the limit is either in TA, or\nthe particular service exposes the current limit values via API calls.",
+            "title": "Overview"
+        },
+        {
+            "location": "/#features",
+            "text": "View dashboard with limits and usage for all of your AWS accounts  Filter dashboard display by Account number  Filter dashboard display by Region  Highlight services that are reaching max limit  Download CSV report",
+            "title": "Features"
+        },
+        {
+            "location": "/AWS-Setup/",
+            "text": "AWS IAM role Setup\n\u00b6\n\n\nSetting your AWS environment\n\u00b6\n\n\nAphelion requires an IAM role with the same name across all accounts in order to create limits report.  \n\n\nIAM Assume Role\n\u00b6\n\n\nIAM must contain proper permissions to obtain create limits report.\n\n\nExample IAM permissions\n\u00b6\n\n\n{\n\n  \n\"Version\"\n:\n \n\"2012-10-17\"\n,\n\n  \n\"Statement\"\n:\n \n[\n\n    \n{\n\n      \n\"Sid\"\n:\n \n\"awsReadOnly12345678TEST\"\n,\n\n      \n\"Effect\"\n:\n \n\"Allow\"\n,\n\n      \n\"Action\"\n:\n \n[\n\n        \n\"acm:DescribeCertificate\"\n,\n\n        \n\"acm:GetCertificate\"\n,\n\n        \n\"acm:ListCertificates\"\n,\n\n        \n\"acm:ListTagsForCertificate\"\n,\n\n        \n\"autoscaling:Describe*\"\n,\n\n        \n\"cloudformation:DescribeStacks\"\n,\n\n        \n\"cloudformation:DescribeStackEvents\"\n,\n\n        \n\"cloudformation:DescribeStackResource\"\n,\n\n        \n\"cloudformation:DescribeStackResources\"\n,\n\n        \n\"cloudformation:GetTemplate\"\n,\n\n        \n\"cloudformation:List*\"\n,\n\n        \n\"cloudfront:Get*\"\n,\n\n        \n\"cloudfront:List*\"\n,\n\n        \n\"cloudtrail:DescribeTrails\"\n,\n\n        \n\"cloudtrail:GetTrailStatus\"\n,\n\n        \n\"cloudwatch:Describe*\"\n,\n\n        \n\"cloudwatch:Get*\"\n,\n\n        \n\"cloudwatch:List*\"\n,\n\n        \n\"codedeploy:BatchGet*\"\n,\n\n        \n\"codedeploy:Get*\"\n,\n\n        \n\"codedeploy:List*\"\n,\n\n        \n\"directconnect:Describe*\"\n,\n\n        \n\"dynamodb:Query\"\n,\n\n        \n\"dynamodb:DescribeTable\"\n,\n\n        \n\"dynamodb:ListTables\"\n,\n\n        \n\"ec2:Describe*\"\n,\n\n        \n\"ec2messages:*\"\n,\n\n        \n\"elasticache:Describe*\"\n,\n\n        \n\"elasticbeanstalk:Describe*\"\n,\n\n        \n\"elasticbeanstalk:List*\"\n,\n\n        \n\"elasticloadbalancing:Describe*\"\n,\n\n        \n\"elasticmapreduce:Describe*\"\n,\n\n        \n\"elasticmapreduce:List*\"\n,\n\n        \n\"elastictranscoder:List*\"\n,\n\n        \n\"iam:GetAccountPasswordPolicy\"\n,\n\n        \n\"iam:GetAccountSummary\"\n,\n\n        \n\"iam:GetGroup\"\n,\n\n        \n\"iam:GetGroupPolicy\"\n,\n\n        \n\"iam:GetInstanceProfile\"\n,\n\n        \n\"iam:GetLoginProfile\"\n,\n\n        \n\"iam:GetRole\"\n,\n\n        \n\"iam:GetRolePolicy\"\n,\n\n        \n\"iam:GetUser\"\n,\n\n        \n\"iam:GetUserPolicy\"\n,\n\n        \n\"iam:ListAccountAliases\"\n,\n\n        \n\"iam:ListGroupPolicies\"\n,\n\n        \n\"iam:ListGroups\"\n,\n\n        \n\"iam:ListGroupsForUser\"\n,\n\n        \n\"iam:ListInstanceProfiles\"\n,\n\n        \n\"iam:ListInstanceProfilesForRole\"\n,\n\n        \n\"iam:ListMFADevices\"\n,\n\n        \n\"iam:ListRolePolicies\"\n,\n\n        \n\"iam:ListRoles\"\n,\n\n        \n\"iam:ListServerCertificates\"\n,\n\n        \n\"iam:ListUserPolicies\"\n,\n\n        \n\"iam:ListUsers\"\n,\n\n        \n\"iam:ListVirtualMFADevices\"\n,\n\n        \n\"iam:GetPolicy\"\n,\n\n        \n\"iam:GetPolicyVersion\"\n,\n\n        \n\"iam:ListPolicies\"\n,\n\n        \n\"iam:ListPolicyVersions\"\n,\n\n        \n\"iam:ListAttachedUserPolicies\"\n,\n\n        \n\"iam:ListAttachedRolePolicies\"\n,\n\n        \n\"lambda:Describe*\"\n,\n\n        \n\"lambda:List*\"\n,\n\n        \n\"opsworks:Describe*\"\n,\n\n        \n\"opsworks:Get*\"\n,\n\n        \n\"route53:Get*\"\n,\n\n        \n\"route53:List*\"\n,\n\n        \n\"rds:Describe*\"\n,\n\n        \n\"rds:ListTagsForResource\"\n,\n\n        \n\"redshift:Describe*\"\n,\n\n        \n\"redshift:ViewQueriesInConsole\"\n,\n\n        \n\"route53:Get*\"\n,\n\n        \n\"route53:List*\"\n,\n\n        \n\"s3:GetBucketAcl\"\n,\n\n        \n\"s3:GetBucketCORS\"\n,\n\n        \n\"s3:GetBucketLocation\"\n,\n\n        \n\"s3:GetBucketLogging\"\n,\n\n        \n\"s3:GetBucketNotification\"\n,\n\n        \n\"s3:GetBucketPolicy\"\n,\n\n        \n\"s3:GetBucketRequestPayment\"\n,\n\n        \n\"s3:GetBucketTagging\"\n,\n\n        \n\"s3:GetBucketVersioning\"\n,\n\n        \n\"s3:GetBucketWebsite\"\n,\n\n        \n\"s3:GetLifecycleConfiguration\"\n,\n\n        \n\"s3:List*\"\n,\n\n        \n\"sdb:GetAttributes\"\n,\n\n        \n\"sdb:List*\"\n,\n\n        \n\"ses:Get*\"\n,\n\n        \n\"ses:List*\"\n,\n\n        \n\"sns:Get*\"\n,\n\n        \n\"sns:List*\"\n,\n\n        \n\"sqs:GetQueueAttributes\"\n,\n\n        \n\"sqs:GetQueueUrl\"\n,\n\n        \n\"sqs:ListQueues\"\n,\n\n        \n\"ssm:Describe*\"\n,\n\n        \n\"ssm:Get*\"\n,\n\n        \n\"ssm:List*\"\n,\n\n        \n\"ssm:UpdateInstanceInformation\"\n,\n\n        \n\"storagegateway:List*\"\n,\n\n        \n\"storagegateway:Describe*\"\n,\n\n        \n\"support:*\"\n,\n\n        \n\"tag:get*\"\n,\n\n        \n\"trustedadvisor:Describe*\"\n\n      \n],\n\n      \n\"Resource\"\n:\n \n[\n\n        \n\"*\"\n\n      \n]\n\n    \n}\n\n  \n]\n\n\n}",
+            "title": "AWS IAM Role Setup"
+        },
+        {
+            "location": "/AWS-Setup/#aws-iam-role-setup",
+            "text": "",
+            "title": "AWS IAM role Setup"
+        },
+        {
+            "location": "/AWS-Setup/#setting-your-aws-environment",
+            "text": "Aphelion requires an IAM role with the same name across all accounts in order to create limits report.",
+            "title": "Setting your AWS environment"
+        },
+        {
+            "location": "/AWS-Setup/#iam-assume-role",
+            "text": "IAM must contain proper permissions to obtain create limits report.",
+            "title": "IAM Assume Role"
+        },
+        {
+            "location": "/AWS-Setup/#example-iam-permissions",
+            "text": "{ \n   \"Version\" :   \"2012-10-17\" , \n   \"Statement\" :   [ \n     { \n       \"Sid\" :   \"awsReadOnly12345678TEST\" , \n       \"Effect\" :   \"Allow\" , \n       \"Action\" :   [ \n         \"acm:DescribeCertificate\" , \n         \"acm:GetCertificate\" , \n         \"acm:ListCertificates\" , \n         \"acm:ListTagsForCertificate\" , \n         \"autoscaling:Describe*\" , \n         \"cloudformation:DescribeStacks\" , \n         \"cloudformation:DescribeStackEvents\" , \n         \"cloudformation:DescribeStackResource\" , \n         \"cloudformation:DescribeStackResources\" , \n         \"cloudformation:GetTemplate\" , \n         \"cloudformation:List*\" , \n         \"cloudfront:Get*\" , \n         \"cloudfront:List*\" , \n         \"cloudtrail:DescribeTrails\" , \n         \"cloudtrail:GetTrailStatus\" , \n         \"cloudwatch:Describe*\" , \n         \"cloudwatch:Get*\" , \n         \"cloudwatch:List*\" , \n         \"codedeploy:BatchGet*\" , \n         \"codedeploy:Get*\" , \n         \"codedeploy:List*\" , \n         \"directconnect:Describe*\" , \n         \"dynamodb:Query\" , \n         \"dynamodb:DescribeTable\" , \n         \"dynamodb:ListTables\" , \n         \"ec2:Describe*\" , \n         \"ec2messages:*\" , \n         \"elasticache:Describe*\" , \n         \"elasticbeanstalk:Describe*\" , \n         \"elasticbeanstalk:List*\" , \n         \"elasticloadbalancing:Describe*\" , \n         \"elasticmapreduce:Describe*\" , \n         \"elasticmapreduce:List*\" , \n         \"elastictranscoder:List*\" , \n         \"iam:GetAccountPasswordPolicy\" , \n         \"iam:GetAccountSummary\" , \n         \"iam:GetGroup\" , \n         \"iam:GetGroupPolicy\" , \n         \"iam:GetInstanceProfile\" , \n         \"iam:GetLoginProfile\" , \n         \"iam:GetRole\" , \n         \"iam:GetRolePolicy\" , \n         \"iam:GetUser\" , \n         \"iam:GetUserPolicy\" , \n         \"iam:ListAccountAliases\" , \n         \"iam:ListGroupPolicies\" , \n         \"iam:ListGroups\" , \n         \"iam:ListGroupsForUser\" , \n         \"iam:ListInstanceProfiles\" , \n         \"iam:ListInstanceProfilesForRole\" , \n         \"iam:ListMFADevices\" , \n         \"iam:ListRolePolicies\" , \n         \"iam:ListRoles\" , \n         \"iam:ListServerCertificates\" , \n         \"iam:ListUserPolicies\" , \n         \"iam:ListUsers\" , \n         \"iam:ListVirtualMFADevices\" , \n         \"iam:GetPolicy\" , \n         \"iam:GetPolicyVersion\" , \n         \"iam:ListPolicies\" , \n         \"iam:ListPolicyVersions\" , \n         \"iam:ListAttachedUserPolicies\" , \n         \"iam:ListAttachedRolePolicies\" , \n         \"lambda:Describe*\" , \n         \"lambda:List*\" , \n         \"opsworks:Describe*\" , \n         \"opsworks:Get*\" , \n         \"route53:Get*\" , \n         \"route53:List*\" , \n         \"rds:Describe*\" , \n         \"rds:ListTagsForResource\" , \n         \"redshift:Describe*\" , \n         \"redshift:ViewQueriesInConsole\" , \n         \"route53:Get*\" , \n         \"route53:List*\" , \n         \"s3:GetBucketAcl\" , \n         \"s3:GetBucketCORS\" , \n         \"s3:GetBucketLocation\" , \n         \"s3:GetBucketLogging\" , \n         \"s3:GetBucketNotification\" , \n         \"s3:GetBucketPolicy\" , \n         \"s3:GetBucketRequestPayment\" , \n         \"s3:GetBucketTagging\" , \n         \"s3:GetBucketVersioning\" , \n         \"s3:GetBucketWebsite\" , \n         \"s3:GetLifecycleConfiguration\" , \n         \"s3:List*\" , \n         \"sdb:GetAttributes\" , \n         \"sdb:List*\" , \n         \"ses:Get*\" , \n         \"ses:List*\" , \n         \"sns:Get*\" , \n         \"sns:List*\" , \n         \"sqs:GetQueueAttributes\" , \n         \"sqs:GetQueueUrl\" , \n         \"sqs:ListQueues\" , \n         \"ssm:Describe*\" , \n         \"ssm:Get*\" , \n         \"ssm:List*\" , \n         \"ssm:UpdateInstanceInformation\" , \n         \"storagegateway:List*\" , \n         \"storagegateway:Describe*\" , \n         \"support:*\" , \n         \"tag:get*\" , \n         \"trustedadvisor:Describe*\" \n       ], \n       \"Resource\" :   [ \n         \"*\" \n       ] \n     } \n   ]  }",
+            "title": "Example IAM permissions"
+        },
+        {
+            "location": "/Local-Setup/",
+            "text": "Local Setup\n\u00b6\n\n\nPrerequisites\n\u00b6\n\n\nMust be able to run application with a role that is able to assume \nASSUMED_ROLE_NAME\n\nwith proper permissions to create report.\n\n\nSince trusted advisor must be told to refresh its values, the script\nlimits-refresh.py must be run some time in advance of the limits collection.\nGenerally, 1 hour before hand is a safe value, but your mileage may vary.\n\n\nAphelion expect to find AWS credentials through the normal client/SDK\ndiscovery mechanisms (instance profile, .aws/credentials file, ENV variables, \netc), and the principal linked to those credentials must be able to assume a\nrole in each target account. Those target role names must be identical in each\ntarget account. That target role must have permissions necessary to list or\ndescribe the resources that are being inspected, as well as issue a TA refresh\nand get a TA report.\n\n\nConfigure\n\u00b6\n\n\nAphelion requires the following properties to be set in order to run.\n\n\nEnvironment Variables\n\u00b6\n\n\n\n\n\n\n\n\nName\n\n\nDescription\n\n\nExample\n\n\n\n\n\n\n\n\n\n\nASSUMED_ROLE_NAME\n\n\nThe name of the role to assume to inspect an account. This needs to be the same across all target accounts\n\n\nassumed_role_name\n\n\n\n\n\n\nASSUMED_ROLE_SESSION_NAME\n\n\nRole session name to pass when assuming the role\n\n\n1234567891011, 1234567891012, 1234567891013, 1234567891014\n\n\n\n\n\n\nACCOUNT_ID_LIST\n\n\nComma separated list of account IDs to interrogate. Will accept with or without leading and/or trailing spaces\n\n\nlimit_dashboard\n\n\n\n\n\n\nREGIONS\n\n\nRegions of interest. TA limits not in this list will be dropped, and non TA limit checks will only be performed in the regions listed\n\n\nus-east-1, us-east-2\n\n\n\n\n\n\nREPORT_FILE_NAME\n\n\nName of the CSV file to create with the results\n\n\nlimits.csv\n\n\n\n\n\n\nCRON_REFRESH\n\n\nCron schedule to run limits-refresh.  Must run about an hour before CRON_LIMITS\n\n\n0 2 * * *\n\n\n\n\n\n\nCRON_LIMITS\n\n\nCron schedule to run limits report.\n\n\n0 3 * * *\n\n\n\n\n\n\nAWS_DEFAULT_REGION\n\n\nAWS Default Region\n\n\nus-east-1\n\n\n\n\n\n\n\n\nDocker Compose Example\n\u00b6\n\n\nversion\n:\n \n'2'\n\n\nservices\n:\n\n  \naphelion-service\n:\n\n    \nimage\n:\n \nfinraos/aphelion-service:latest\n\n    \nenvironment\n:\n\n      \n-\n \nASSUMED_ROLE_NAME=Assumed_Role_Name\n\n      \n-\n \nACCOUNT_ID_LIST=123456789101, 123456789102, 123456789103\n\n      \n-\n \nASSUMED_ROLE_SESSION_NAME=aphelion_role\n\n      \n-\n \nREGIONS=us-east-1, us-east-2, us-west-1\n\n      \n-\n \nREPORT_FILE_NAME=limits.csv\n\n      \n-\n \nCRON_REFRESH=* * * * *\n\n      \n-\n \nCRON_LIMITS=* * * * *\n\n      \n-\n \nAWS_DEFAULT_REGION=us-east-1\n\n    \nvolumes\n:\n\n       \n-\n \n/Users/$USER/.aws:/root/.aws\n\n  \ndashboard-service\n:\n\n    \nimage\n:\n \nfinraos/aphelion-dashboard-service\n\n  \nweb\n:\n\n    \nimage\n:\n \nfinraos/aphelion-web\n\n    \nports\n:\n\n      \n-\n \n443:8443\n\n    \nrestart\n:\n \nalways\n\n    \nlinks\n:\n\n     \n-\n \ndashboard-service\n\n     \n-\n \naphelion-service\n\n\n\n\n\n\n\nAWS Credentials\n\n\nTo run locally you might need to mount your ./AWS folder to limit-service\n\nvolumes\n:\n\n  \n-\n \n/Users/$USER/.aws:/root/.aws\n\n\n\n\n\n\nRUN\n\u00b6\n\n\n\n\nStart service\n    \ndocker-compose -f local.yml up\n\n\n\nNavigate to URL\n    \nhttps://localhost",
+            "title": "Local Setup"
+        },
+        {
+            "location": "/Local-Setup/#local-setup",
+            "text": "",
+            "title": "Local Setup"
+        },
+        {
+            "location": "/Local-Setup/#prerequisites",
+            "text": "Must be able to run application with a role that is able to assume  ASSUMED_ROLE_NAME \nwith proper permissions to create report.  Since trusted advisor must be told to refresh its values, the script\nlimits-refresh.py must be run some time in advance of the limits collection.\nGenerally, 1 hour before hand is a safe value, but your mileage may vary.  Aphelion expect to find AWS credentials through the normal client/SDK\ndiscovery mechanisms (instance profile, .aws/credentials file, ENV variables, \netc), and the principal linked to those credentials must be able to assume a\nrole in each target account. Those target role names must be identical in each\ntarget account. That target role must have permissions necessary to list or\ndescribe the resources that are being inspected, as well as issue a TA refresh\nand get a TA report.",
+            "title": "Prerequisites"
+        },
+        {
+            "location": "/Local-Setup/#configure",
+            "text": "Aphelion requires the following properties to be set in order to run.",
+            "title": "Configure"
+        },
+        {
+            "location": "/Local-Setup/#environment-variables",
+            "text": "Name  Description  Example      ASSUMED_ROLE_NAME  The name of the role to assume to inspect an account. This needs to be the same across all target accounts  assumed_role_name    ASSUMED_ROLE_SESSION_NAME  Role session name to pass when assuming the role  1234567891011, 1234567891012, 1234567891013, 1234567891014    ACCOUNT_ID_LIST  Comma separated list of account IDs to interrogate. Will accept with or without leading and/or trailing spaces  limit_dashboard    REGIONS  Regions of interest. TA limits not in this list will be dropped, and non TA limit checks will only be performed in the regions listed  us-east-1, us-east-2    REPORT_FILE_NAME  Name of the CSV file to create with the results  limits.csv    CRON_REFRESH  Cron schedule to run limits-refresh.  Must run about an hour before CRON_LIMITS  0 2 * * *    CRON_LIMITS  Cron schedule to run limits report.  0 3 * * *    AWS_DEFAULT_REGION  AWS Default Region  us-east-1",
+            "title": "Environment Variables"
+        },
+        {
+            "location": "/Local-Setup/#docker-compose-example",
+            "text": "version :   '2'  services : \n   aphelion-service : \n     image :   finraos/aphelion-service:latest \n     environment : \n       -   ASSUMED_ROLE_NAME=Assumed_Role_Name \n       -   ACCOUNT_ID_LIST=123456789101, 123456789102, 123456789103 \n       -   ASSUMED_ROLE_SESSION_NAME=aphelion_role \n       -   REGIONS=us-east-1, us-east-2, us-west-1 \n       -   REPORT_FILE_NAME=limits.csv \n       -   CRON_REFRESH=* * * * * \n       -   CRON_LIMITS=* * * * * \n       -   AWS_DEFAULT_REGION=us-east-1 \n     volumes : \n        -   /Users/$USER/.aws:/root/.aws \n   dashboard-service : \n     image :   finraos/aphelion-dashboard-service \n   web : \n     image :   finraos/aphelion-web \n     ports : \n       -   443:8443 \n     restart :   always \n     links : \n      -   dashboard-service \n      -   aphelion-service    AWS Credentials  To run locally you might need to mount your ./AWS folder to limit-service volumes : \n   -   /Users/$USER/.aws:/root/.aws",
+            "title": "Docker Compose Example"
+        },
+        {
+            "location": "/Local-Setup/#run",
+            "text": "Start service\n     docker-compose -f local.yml up  Navigate to URL\n     https://localhost",
+            "title": "RUN"
+        },
+        {
+            "location": "/Deploy/",
+            "text": "Deploy to AWS\n\u00b6\n\n\nOverview\n\u00b6\n\n\nAphelion is distributed as Docker images.  We recommend deploying Aphelion as Docker containers on AWS ECS cluster.\nFollowing is our recommended approach.\n\n\nPrerequisites\n\u00b6\n\n\n\n\nECS cluster\n\n\nALB\n\n\nTask definition                                        \n\n\n\n\nTask Definition\n\u00b6\n\n\nYou can create Task definition from the Docker Compose file by using ECS CLI.  You can refer to the documentation at:\n\n\n\n\nhttps://docs.aws.amazon.com/AmazonECS/latest/developerguide/cmd-ecs-cli-compose.html\n\n\n\n\nDocker Compose Example\n\u00b6\n\n\nversion\n:\n \n'2'\n\n\nservices\n:\n\n  \naphelion-service\n:\n\n    \nimage\n:\n \nfinraos/aphelion-service\n\n    \nenvironment\n:\n\n       \n-\n \nASSUMED_ROLE_NAME=assumed_role_name\n\n       \n-\n \nACCOUNT_ID_LIST=123456789101, 123456789102, 123456789103, 123456789104\n\n       \n-\n \nASSUMED_ROLE_SESSION_NAME=limit_dashboard\n\n       \n-\n \nREGIONS=us-east-1, us-east-2\n\n       \n-\n \nAWS_DEFAULT_REGION=us-east-1\n\n       \n-\n \nREPORT_FILE_NAME=limits.csv\n\n       \n-\n \nCRON_REFRESH=* * * * *\n\n       \n-\n \nCRON_LIMITS=* * * * *\n\n  \ndashboard-service\n:\n\n    \nimage\n:\n \nfinraos/aphelion-dashboard-service\n\n  \nweb\n:\n\n    \nimage\n:\n \nfinraos/aphelion-web\n\n    \nports\n:\n\n       \n-\n \n8443\n\n    \nrestart\n:\n \nalways\n\n    \nlinks\n:\n\n       \n-\n \ndashboard-service\n\n       \n-\n \naphelion-service\n\n\n\n\n\n\n\nTip\n\n\nYou can AWS log configuration properties to the docker-compose file\n\n\n\n\nProcess\n\u00b6\n\n\n\n\n\n\nCreate ECS cluster\n\n\n\n\n\n\nCreate ALB\n\n\n\n\n\n\nCreate Task Definition registered to ECS cluster\n\n\n\n\n\n\nDeploy Task Definition",
+            "title": "Deploy"
+        },
+        {
+            "location": "/Deploy/#deploy-to-aws",
+            "text": "",
+            "title": "Deploy to AWS"
+        },
+        {
+            "location": "/Deploy/#overview",
+            "text": "Aphelion is distributed as Docker images.  We recommend deploying Aphelion as Docker containers on AWS ECS cluster.\nFollowing is our recommended approach.",
+            "title": "Overview"
+        },
+        {
+            "location": "/Deploy/#prerequisites",
+            "text": "ECS cluster  ALB  Task definition",
+            "title": "Prerequisites"
+        },
+        {
+            "location": "/Deploy/#task-definition",
+            "text": "You can create Task definition from the Docker Compose file by using ECS CLI.  You can refer to the documentation at:   https://docs.aws.amazon.com/AmazonECS/latest/developerguide/cmd-ecs-cli-compose.html",
+            "title": "Task Definition"
+        },
+        {
+            "location": "/Deploy/#docker-compose-example",
+            "text": "version :   '2'  services : \n   aphelion-service : \n     image :   finraos/aphelion-service \n     environment : \n        -   ASSUMED_ROLE_NAME=assumed_role_name \n        -   ACCOUNT_ID_LIST=123456789101, 123456789102, 123456789103, 123456789104 \n        -   ASSUMED_ROLE_SESSION_NAME=limit_dashboard \n        -   REGIONS=us-east-1, us-east-2 \n        -   AWS_DEFAULT_REGION=us-east-1 \n        -   REPORT_FILE_NAME=limits.csv \n        -   CRON_REFRESH=* * * * * \n        -   CRON_LIMITS=* * * * * \n   dashboard-service : \n     image :   finraos/aphelion-dashboard-service \n   web : \n     image :   finraos/aphelion-web \n     ports : \n        -   8443 \n     restart :   always \n     links : \n        -   dashboard-service \n        -   aphelion-service    Tip  You can AWS log configuration properties to the docker-compose file",
+            "title": "Docker Compose Example"
+        },
+        {
+            "location": "/Deploy/#process",
+            "text": "Create ECS cluster    Create ALB    Create Task Definition registered to ECS cluster    Deploy Task Definition",
+            "title": "Process"
+        },
+        {
+            "location": "/Troubleshooting/",
+            "text": "Troubleshooting\n\u00b6\n\n\nTroubleshooting\n\u00b6\n\n\nNot displaying any data can be caused by several different reasons.  In order to to find the root cause you can login\nto the limit-service instance and look for the log located at:\n\n/var/log/cron.log\n\n\n\nAWS credentials are not properly getting passed to Aphelion\n\u00b6\n\n\n\n\nIf application is running locally you might need to mount volume.  \n\n\nIf application is deployed to AWS, Task might not be configured to access AWS credential information.  \n\n\nTask might not be able to AWS calls.\n\n\n\n\nInvalid AWS credentials are getting passed to Aphelion\n\u00b6\n\n\n\n\nProvided Credentials are not allowing Aphelion to assume role \n\n\n\n\nRole does not have proper permissions to assume role\n\u00b6\n\n\n\n\nIf deployed locally, user might not have permissions to assume role on 1 or more accounts.\n\n\nIf deployed on AWS, Task might not be running under role that is able to assume role \n\n\n\n\nASSUME_ROLE is missing permissions to generate report\n\u00b6\n\n\n\n\nASSUME_ROLE might be missing a permission to generate report on 1 or more accounts\n\n\n\n\nEnvironment Variables are not being set or are configured improperly\n\u00b6\n\n\n\n\nAphelion is missing 1 or more Environment Variables",
+            "title": "Troubleshooting"
+        },
+        {
+            "location": "/Troubleshooting/#troubleshooting",
+            "text": "",
+            "title": "Troubleshooting"
+        },
+        {
+            "location": "/Troubleshooting/#troubleshooting_1",
+            "text": "Not displaying any data can be caused by several different reasons.  In order to to find the root cause you can login\nto the limit-service instance and look for the log located at: /var/log/cron.log",
+            "title": "Troubleshooting"
+        },
+        {
+            "location": "/Troubleshooting/#aws-credentials-are-not-properly-getting-passed-to-aphelion",
+            "text": "If application is running locally you might need to mount volume.    If application is deployed to AWS, Task might not be configured to access AWS credential information.    Task might not be able to AWS calls.",
+            "title": "AWS credentials are not properly getting passed to Aphelion"
+        },
+        {
+            "location": "/Troubleshooting/#invalid-aws-credentials-are-getting-passed-to-aphelion",
+            "text": "Provided Credentials are not allowing Aphelion to assume role",
+            "title": "Invalid AWS credentials are getting passed to Aphelion"
+        },
+        {
+            "location": "/Troubleshooting/#role-does-not-have-proper-permissions-to-assume-role",
+            "text": "If deployed locally, user might not have permissions to assume role on 1 or more accounts.  If deployed on AWS, Task might not be running under role that is able to assume role",
+            "title": "Role does not have proper permissions to assume role"
+        },
+        {
+            "location": "/Troubleshooting/#assume_role-is-missing-permissions-to-generate-report",
+            "text": "ASSUME_ROLE might be missing a permission to generate report on 1 or more accounts",
+            "title": "ASSUME_ROLE is missing permissions to generate report"
+        },
+        {
+            "location": "/Troubleshooting/#environment-variables-are-not-being-set-or-are-configured-improperly",
+            "text": "Aphelion is missing 1 or more Environment Variables",
+            "title": "Environment Variables are not being set or are configured improperly"
+        }
+    ]
+}

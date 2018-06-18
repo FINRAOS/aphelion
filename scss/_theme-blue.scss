@@ -1,0 +1,23 @@
+$primary:     #3856A9;
+$primary-rgb: rgb(56,86,169);
+$accent1:     #5739AC;
+$accent2:     #278F99;
+$warn:        #f34235;
+
+$black: #000;
+$white: #fff;
+$black-low-transparency:  rgba(0,0,0,0.7);
+$black-high-transparency: rgba(0,0,0,0.3);
+$white-low-transparency:  rgba(255,255,255,0.7);
+$white-high-transparency: rgba(255,255,255,0.3);
+
+$link:  $white;
+$text:  $white;
+
+// Maps
+$section-light-bg: (
+  bg-color: $white,
+  txt-color: $black,
+  primary: $accent2,
+  accent: $primary
+);

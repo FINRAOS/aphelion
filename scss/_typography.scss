@@ -1,0 +1,115 @@
+html {
+  font-family: $font-family-2;
+  font-size: $font-size-base;  // Base font size
+  font-weight: $font-weight-light;
+  line-height: $line-height-body;
+}
+
+.display-1 {
+  font-family: $font-family-1;
+  font-size: $font-size-display-1;
+  font-weight: $font-weight-black;
+  line-height: $line-height-headline;
+}
+.headline {
+  font-family: $font-family-1;
+  font-size: $font-size-headline;
+  font-weight: $font-weight-black;
+  line-height: $line-height-headline;
+}
+.title {
+  font-family: $font-family-1;
+  font-size: $font-size-title;
+  font-weight: $font-weight-black;
+  line-height: $line-height-headline;
+}
+
+h1,
+h2 {
+  & + p {
+    margin-top: -1em;
+  }
+}
+h1 {
+  @extend .headline;
+}
+h2 {
+  @extend .title;
+}
+
+
+// @mixin td-typography($config: null) {
+//   @if $config == null {
+//     $config: td-typography-config();
+//   }
+//
+//   body {
+//     font-family: td-font-family($config);
+//   }
+// }
+//
+// @function td-typography-config(
+//   $font-family:   'Roboto, "Helvetica Neue", sans-serif',
+//   $headline:      td-typography-level(48px, 66px, 900),
+//   $title:         td-typography-level(36px, 49px, 700),
+//   $subheading-2:  td-typography-level(24px, 28px, 100),
+//   $subheading-1:  td-typography-level(18px, 21px, 700),
+//   $body-2:        td-typography-level(14px, 24px, 400),
+//   $body-1:        td-typography-level(14px, 24px, 700),
+//   $caption:       td-typography-level(12px, 20px, 400)
+// ) {
+//   @return (
+//     font-family:    $font-family,
+//     headline:       $headline,
+//     title:          $title,
+//     subheading-2:   $subheading-2,
+//     subheading-1:   $subheading-1,
+//     body-2:         $body-2,
+//     body-1:         $body-1,
+//     caption:        $caption
+//   );
+// }
+//
+//
+// // =========
+// // FUNCTIONS
+//
+// // Utility for fetching a nested value from a typography config.
+// @function _td-get-type-value($config, $level, $name) {
+//   @return map-get(map-get($config, $level), $name);
+// }
+//
+// // Gets the font size for a level inside a typography config.
+// @function td-font-size($config, $level) {
+//   @return _td-get-type-value($config, $level, font-size);
+// }
+//
+// // Gets the line height for a level inside a typography config.
+// @function td-line-height($config, $level) {
+//   @return _td-get-type-value($config, $level, line-height);
+// }
+//
+// // Gets the font weight for a level inside a typography config.
+// @function td-font-weight($config, $level) {
+//   @return _td-get-type-value($config, $level, font-weight);
+// }
+//
+// // Gets the font-family from a typography config and removes the quotes around it.
+// @function td-font-family($config, $level: null) {
+//   $font-family: map-get($config, font-family);
+//
+//   @if $level != null {
+//     $font-family: _td-get-type-value($config, $level, font-family);
+//   }
+//
+//   @return unquote($font-family);
+// }
+//
+// // Represents a typography level.
+// @function td-typography-level($font-size, $line-height: $font-size, $font-weight: 400) {
+//   @return (
+//     font-size: $font-size,
+//     line-height: $line-height,
+//     font-weight: $font-weight
+//   );
+// }
