@@ -1,5 +1,7 @@
+<img src="/img/logo.png" alt="drawing" width="400px"/>
+
 ## What is Aphelion?
-Aphelion is a dashboard to visualize AWS services usage limits for your AWS accounts
+Aphelion is a web application that captures and visualizes your AWS services usage limits.  It continuously collects data in the background and you can visualize the data in easy-to-see graphs and charts.
 
 [![Aphelion dashboard](docs/images/dashboard.png)](docs/images/dashboard.png)
 
