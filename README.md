@@ -1,5 +1,3 @@
-<img src="https://github.com/FINRAOS/aphelion/blob/gh-pages/img/logo.png" alt="drawing" width="400px"/>
-
 ## What is Aphelion?
 Aphelion is a web application that captures and visualizes your AWS services usage limits.  It continuously collects data in the background and you can visualize the data in easy-to-see graphs and charts.
 
