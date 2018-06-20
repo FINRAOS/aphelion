@@ -62,7 +62,7 @@ services:
 ```
 
 !!! warning "AWS Credentials"
-    To run locally you might need to mount your ./AWS folder to limit-service
+    To run locally you might need to mount your ./AWS folder to aphelion-service
     ```YAML
     volumes:
       - /Users/$USER/.aws:/root/.aws
