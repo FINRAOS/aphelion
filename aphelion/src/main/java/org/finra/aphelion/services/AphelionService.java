@@ -360,6 +360,31 @@ public class AphelionService {
             point.setTarget(accountName.toString());
             point.setDatapoints(Arrays.asList(Arrays.asList(total, 1)));
             timeseries.setResults(Arrays.asList(point));
+        } else if (key.contains("gt") && key.contains("lt")) {
+            AtomicInteger lessThanValue = new AtomicInteger(0);
+            AtomicInteger greaterThanValue = new AtomicInteger(0);
+            String[] splitValues = key.split("&");
+            for(String split : splitValues){
+                try {
+                    if(split.contains("lt")) {
+                        lessThanValue.getAndSet(Integer.parseInt(split.split("=")[1]));
+                    } else if (split.contains("gt")) {
+                        greaterThanValue.getAndSet(Integer.parseInt(split.split("=")[1]));
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+
+            Long total = datapoints.stream()
+                    .filter(x -> (Integer.parseInt(x.getUsage()) < lessThanValue.get()) &&
+                            (Integer.parseInt(x.getUsage()) > greaterThanValue.get()))
+                    .count();
+
+            TimeSeriesPoint point = new TimeSeriesPoint();
+            point.setTarget(accountName.toString());
+            point.setDatapoints(Arrays.asList(Arrays.asList(total, 1)));
+            timeseries.setResults(Arrays.asList(point));
         } else if (key.contains("gt")) {
             AtomicInteger value = new AtomicInteger(0);
             try {

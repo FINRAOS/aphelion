@@ -20,6 +20,7 @@
   "links": [
     {
       "icon": "doc",
+      "includeVars": false,
       "tags": [],
       "targetBlank": true,
       "title": "Download CSV",
@@ -53,7 +54,7 @@
       },
       "gridPos": {
         "h": 2,
-        "w": 8,
+        "w": 6,
         "x": 0,
         "y": 0
       },
@@ -131,6 +132,97 @@
       "colorBackground": true,
       "colorValue": false,
       "colors": [
+        "#d06e18",
+        "#d06e18",
+        "#d06e18"
+      ],
+      "datasource": "QueryEngine",
+      "dd": {
+        "hasRawData": false,
+        "rawDataAlias": "null"
+      },
+      "format": "none",
+      "gauge": {
+        "maxValue": 100,
+        "minValue": 0,
+        "show": false,
+        "thresholdLabels": false,
+        "thresholdMarkers": false
+      },
+      "gridPos": {
+        "h": 2,
+        "w": 6,
+        "x": 6,
+        "y": 0
+      },
+      "id": 9,
+      "interval": null,
+      "links": [],
+      "mappingType": 1,
+      "mappingTypes": [
+        {
+          "name": "value to text",
+          "value": 1
+        },
+        {
+          "name": "range to text",
+          "value": 2
+        }
+      ],
+      "maxDataPoints": 100,
+      "nullPointMode": "connected",
+      "nullText": null,
+      "postfix": "",
+      "postfixFontSize": "50%",
+      "prefix": "",
+      "prefixFontSize": "50%",
+      "rangeMaps": [
+        {
+          "from": "null",
+          "text": "N/A",
+          "to": "null"
+        }
+      ],
+      "sparkline": {
+        "fillColor": "rgba(31, 118, 189, 0.18)",
+        "full": false,
+        "lineColor": "rgb(31, 120, 193)",
+        "show": false
+      },
+      "tableColumn": "",
+      "targets": [
+        {
+          "alias": "datapoints/timeseries",
+          "namespace": "/",
+          "refId": "A",
+          "targets": [
+            {
+              "field": "key",
+              "name": "key",
+              "type": "string",
+              "value": "gt=74&lt=80"
+            }
+          ]
+        }
+      ],
+      "thresholds": "",
+      "title": "Warning",
+      "type": "singlestat",
+      "valueFontSize": "80%",
+      "valueMaps": [
+        {
+          "op": "=",
+          "text": "N/A",
+          "value": "null"
+        }
+      ],
+      "valueName": "current"
+    },
+    {
+      "cacheTimeout": null,
+      "colorBackground": true,
+      "colorValue": false,
+      "colors": [
         "#B71C1C",
         "#B71C1C",
         "#B71C1C"
@@ -150,11 +242,11 @@
       },
       "gridPos": {
         "h": 2,
-        "w": 8,
-        "x": 8,
+        "w": 6,
+        "x": 12,
         "y": 0
       },
-      "id": 3,
+      "id": 4,
       "interval": null,
       "links": [],
       "mappingType": 1,
@@ -241,11 +333,11 @@
       },
       "gridPos": {
         "h": 2,
-        "w": 8,
-        "x": 16,
+        "w": 6,
+        "x": 18,
         "y": 0
       },
-      "id": 4,
+      "id": 5,
       "interval": null,
       "links": [],
       "mappingType": 1,
