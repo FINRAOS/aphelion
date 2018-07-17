@@ -60,14 +60,13 @@ public class AphelionServiceTest {
             BufferedReader bfReader = new BufferedReader(new InputStreamReader(is));
             String temp = null;
 
-        when(csvService.getCsv()).thenReturn(bfReader);
-        when(csvService.getLatestCSVFileName()).thenReturn("test.csv");
+        when(csvService.getCsv("latest")).thenReturn(bfReader);
     }
 
     @Test
     public void getDataPoints() throws Exception {
 
-        List<Datapoint> datapoints = aphelionService.getDataPoints();
+        List<Datapoint> datapoints = aphelionService.getDataPoints("latest");
 
         Assert.assertEquals(3, datapoints.size());
         Assert.assertEquals("132256839153", datapoints.get(0).getAccountId());
@@ -196,4 +195,30 @@ public class AphelionServiceTest {
         Assert.assertEquals(region, results.get(0).getName());
         Assert.assertEquals(1, results.size());
     }
+
+    @Test
+    public void getAllSourceFiles(){
+        List<String> sourceFiles  = Arrays.asList("2018-07-16T18:03:08-limits.csv", "2018-07-15T18:03:08-limits.csv", "2018-07-14T18:03:08-limits.csv");
+        when(csvService.getAllCsvFileNames()).thenReturn(sourceFiles);
+
+        List<Checkbox> results = aphelionService.getAllSourceFiles();
+
+        Assert.assertEquals(3, results.size());
+        Assert.assertEquals("2018-07-16T18:03:08-limits.csv", results.get(0).getName());
+        Assert.assertEquals("2018-07-14T18:03:08-limits.csv", results.get(2).getName());
+    }
+
+    @Test
+    public void getAllSourceFilesMetadata(){
+        List<String> sourceFiles  = Arrays.asList("2018-07-16T18:03:08-limits.csv", "2018-07-15T18:03:08-limits.csv", "2018-07-14T18:03:08-limits.csv");
+        when(csvService.getAllCsvFileNames()).thenReturn(sourceFiles);
+
+        Metadata results = aphelionService.getAllSourceFilesMetadata();
+
+        Assert.assertEquals(3, results.getParameters().size());
+        Assert.assertEquals("2018-07-16T18:03:08-limits.csv", results.getParameters().get(0).getName());
+        Assert.assertEquals(false, results.getRawData());
+        Assert.assertEquals("checkbox", results.getDataSpecType());
+    }
+
 }

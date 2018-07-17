@@ -61,24 +61,24 @@ public class AphelionService {
             .refreshAfterWrite(1, TimeUnit.MINUTES)
             .build(new CacheLoader<String, List<Datapoint>>() {
                 @Override
-                public List<Datapoint> load(String account) throws Exception {
-                    return loadDataPoints();
+                public List<Datapoint> load(String source)  {
+                    return loadDataPoints(source);
                 }
             });
 
 
-    public List<Datapoint> getDataPoints() {
-        return datapoints.getUnchecked("all");
+    public List<Datapoint> getDataPoints(String source) {
+        return datapoints.getUnchecked(source);
     }
 
 
 
-    private List<Datapoint> loadDataPoints() {
-        logger.info("Loaded datapoints");
+    private List<Datapoint> loadDataPoints(String source) {
+        logger.info("Loaded datapoints " + source);
 
         Pattern pattern = Pattern.compile(",");
 
-        BufferedReader in = csvService.getCsv();
+        BufferedReader in = csvService.getCsv(source);
 
         if(in == null)
             throw new NullPointerException("CSV file not found. CSV file might have not been created yet. Try running limits.py again or check: /var/log/cron.log");
@@ -114,6 +114,7 @@ public class AphelionService {
         Integer rowsPerPage;
         Integer pageNumber;
         Integer totalNumberOfItems;
+        String source;
         AtomicReference accountName = new AtomicReference();
         AtomicReference region = new AtomicReference();
         AtomicReference service = new AtomicReference();
@@ -124,6 +125,12 @@ public class AphelionService {
         Table table = new Table();
         List<Map<String, Object>> list = new ArrayList<>();
         List<Datapoint> datapoints;
+
+        try {
+            source = parameters.get("parameters").get("source").asText("latest");
+        } catch (Exception e) {
+            source = "latest";
+        }
 
         try {
             rowsPerPage = parameters.get("parameters").get("rowsPerPage").asInt();
@@ -161,7 +168,7 @@ public class AphelionService {
             sorting.set("none");
         }
 
-        datapoints = getDataPoints()
+        datapoints = getDataPoints(source)
                 .stream()
                 .sorted((a, b) -> b.compareTo(a))
                 .collect(Collectors.toList());
@@ -294,9 +301,15 @@ public class AphelionService {
         List<Datapoint> datapoints;
         String key;
         String range = null;
+        String source;
 
         Timeseries timeseries = new Timeseries();
 
+        try {
+            source = parameters.get("parameters").get("source").asText("latest");
+        } catch (Exception e) {
+            source = "latest";
+        }
         try {
             range = (parameters.get("range").get("to").asText("1"));
             rangeTimeStamp.set(this.formatToUnixTime(range));
@@ -322,7 +335,7 @@ public class AphelionService {
             region.set("-");
         }
 
-        datapoints = getDataPoints()
+        datapoints = getDataPoints(source)
                 .stream()
                 .sorted((a, b) -> b.compareTo(a))
                 .collect(Collectors.toList());
@@ -437,6 +450,13 @@ public class AphelionService {
         AtomicReference selected = new AtomicReference();
         List<Datapoint> datapoints;
         AtomicInteger index = new AtomicInteger();
+        String source;
+
+        try {
+            source = parameters.get("parameters").get("source").asText("latest");
+        } catch (Exception e) {
+            source = "latest";
+        }
 
         try {
             accountName.set(parameters.get("parameters").get("accountName").asText("$__all"));
@@ -450,7 +470,7 @@ public class AphelionService {
             region.set("-");
         }
 
-        datapoints = getDataPoints()
+        datapoints = getDataPoints(source)
                 .stream()
                 .sorted((a, b) -> b.compareTo(a))
                 .collect(Collectors.toList());
@@ -483,7 +503,7 @@ public class AphelionService {
     }
 
     public Metadata getAllAccountsMetadata() {
-        List<String> accounts =  getDataPoints()
+        List<String> accounts =  getDataPoints("latest")
                 .stream()
                 .map(x -> x.getAccountId())
                 .distinct()
@@ -498,7 +518,7 @@ public class AphelionService {
     }
 
     public List<Checkbox> getAllAccounts() {
-        List<String> accounts = getDataPoints()
+        List<String> accounts = getDataPoints("latest")
                 .stream()
                 .map(x -> x.getAccountId())
                 .distinct()
@@ -514,7 +534,7 @@ public class AphelionService {
     }
 
     public Metadata getAllRegionsMetadata() {
-        List<String> regions = getDataPoints()
+        List<String> regions = getDataPoints("latest")
                 .stream()
                 .map(x -> x.getRegion())
                 .distinct()
@@ -529,7 +549,7 @@ public class AphelionService {
     }
 
     public List<Checkbox> getAllRegions() {
-        List<String> regions  = getDataPoints()
+        List<String> regions  = getDataPoints("latest")
                 .stream()
                 .map(x -> x.getRegion())
                 .distinct()
@@ -538,6 +558,28 @@ public class AphelionService {
         List<Checkbox> results = new ArrayList<>();
         for (String region : regions) {
             results.add(new Checkbox(region));
+        }
+
+        return results;
+    }
+
+    public Metadata getAllSourceFilesMetadata() {
+        List<String> sourceFiles  = csvService.getAllCsvFileNames();
+
+        List<Parameter> options = new ArrayList<>();
+        for (String file : sourceFiles) {
+            options.add(new Parameter(file));
+        }
+
+        return new Metadata().withParameters(options, "checkbox");
+    }
+
+    public List<Checkbox> getAllSourceFiles() {
+        List<String> sourceFiles  = csvService.getAllCsvFileNames();
+
+        List<Checkbox> results = new ArrayList<>();
+        for (String file : sourceFiles) {
+            results.add(new Checkbox(file));
         }
 
         return results;
