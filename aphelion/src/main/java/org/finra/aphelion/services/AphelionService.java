@@ -31,14 +31,11 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import javax.inject.Inject;
-import java.io.*;
-import java.time.LocalDateTime;
-import java.time.ZoneOffset;
-import java.time.format.DateTimeFormatter;
+
+import java.io.BufferedReader;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
-import java.util.concurrent.atomic.AtomicReference;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
@@ -70,8 +67,6 @@ public class AphelionService {
     public List<Datapoint> getDataPoints(String source) {
         return datapoints.getUnchecked(source);
     }
-
-
 
     private List<Datapoint> loadDataPoints(String source) {
         logger.info("Loaded datapoints " + source);
@@ -109,128 +104,91 @@ public class AphelionService {
         return datapoints;
     }
 
-    public Table getDatapointsTable(JsonNode parameters) {
-
-        Integer rowsPerPage;
-        Integer pageNumber;
-        Integer totalNumberOfItems;
-        String source;
-        AtomicReference accountName = new AtomicReference();
-        AtomicReference region = new AtomicReference();
-        AtomicReference service = new AtomicReference();
-        AtomicReference selected = new AtomicReference();
-        AtomicReference limit = new AtomicReference();
-        AtomicReference column = new AtomicReference();
-        AtomicReference sorting = new AtomicReference();
-        Table table = new Table();
-        List<Map<String, Object>> list = new ArrayList<>();
-        List<Datapoint> datapoints;
-
-        try {
-            source = parameters.get("parameters").get("source").asText("latest");
-        } catch (Exception e) {
-            source = "latest";
+    protected void sortDataPoints(List<Datapoint> datapoints, QueryParameter queryParameter) {
+        switch(queryParameter.getColumn()) {
+            case "Account ID":
+                Collections.sort(datapoints, Comparator.comparing(Datapoint::getAccountId));
+                if(queryParameter.getSorting().equals("descending"))
+                    Collections.reverse(datapoints);
+                break;
+            case "Service":
+                Collections.sort(datapoints, Comparator.comparing(Datapoint::getService));
+                if(queryParameter.getSorting().equals("descending"))
+                    Collections.reverse(datapoints);
+                break;
+            case "Limit":
+                Collections.sort(datapoints, Comparator.comparing(Datapoint::getLimit));
+                if(queryParameter.getSorting().equals("descending"))
+                    Collections.reverse(datapoints);
+                break;
+            case "Used":
+                datapoints.sort(Comparator.comparing(Datapoint::getIntegerUsed));
+                if(queryParameter.getSorting().equals("descending"))
+                    Collections.reverse(datapoints);
+                break;
+            case "Max":
+                datapoints.sort(Comparator.comparing(Datapoint::getIntegerMax));
+                if(queryParameter.getSorting().equals("descending"))
+                    Collections.reverse(datapoints);
+                break;
+            case "Usage":
+                Collections.sort(datapoints, Comparator.comparingDouble(d -> Double.parseDouble(d.getUsage())));
+                if(queryParameter.getSorting().equals("descending"))
+                    Collections.reverse(datapoints);
+                break;
+            default:
+                break;
         }
+    }
 
-        try {
-            rowsPerPage = parameters.get("parameters").get("rowsPerPage").asInt();
-        } catch (Exception e) {
-            rowsPerPage = 10;
-        }
+    protected List<Datapoint> filterDataPoints(QueryParameter queryParameter) {
 
-        try {
-            pageNumber = parameters.get("parameters").get("page").asInt();
-        } catch (Exception e) {
-            pageNumber = 1;
-        }
-
-        try {
-            accountName.set(parameters.get("parameters").get("accountName").asText("ALL"));
-        } catch (Exception e) {
-            accountName.set("ALL");
-        }
-
-        try {
-            region.set(parameters.get("parameters").get("region").asText("-"));
-        } catch (Exception e) {
-            region.set("-");
-        }
-
-        try {
-            column.set(parameters.get("parameters").get("columnTitle").asText("none"));
-        } catch (Exception e) {
-            column.set("none");
-        }
-
-        try {
-            sorting.set(parameters.get("parameters").get("sorting").asText("none"));
-        } catch (Exception e) {
-            sorting.set("none");
-        }
-
-        datapoints = getDataPoints(source)
+        List<Datapoint> datapoints = getDataPoints(queryParameter.getSource())
                 .stream()
                 .sorted((a, b) -> b.compareTo(a))
                 .collect(Collectors.toList());
 
-        if (!accountName.toString().equals("ALL") && !accountName.toString().equals("$__all") && accountName != null) {
+
+        if (!queryParameter.getAccountName().toString().equals("null") && (!queryParameter.getAccountName().equals("ALL") && !queryParameter.getAccountName().toString().equals("$__all"))) {
             datapoints = datapoints
                     .stream()
-                    .filter(x -> x.getAccountId().equals(accountName.toString()))
+                    .filter(x -> x.getAccountId().equals(queryParameter.getAccountName()))
                     .collect(Collectors.toList());
         }
 
-        if (!region.toString().equals("-") && !region.toString().equals("$__all") && region != null) {
+
+        if (!queryParameter.getRegion().toString().equals("null") && (!queryParameter.getRegion().equals("-") && !queryParameter.getRegion().equals("$__all"))) {
             datapoints = datapoints
                     .stream()
-                    .filter(x -> x.getRegion().equals(region.toString()))
+                    .filter(x -> x.getRegion().equals(queryParameter.getRegion()))
                     .collect(Collectors.toList());
         }
 
-        if (!sorting.toString().equals("none") && !column.toString().equals("none")) {
-            switch(column.toString()) {
-                case "Account ID":
-                    Collections.sort(datapoints, Comparator.comparing(Datapoint::getAccountId));
-                    if(sorting.toString().equals("descending"))
-                        Collections.reverse(datapoints);
-                    break;
-                case "Service":
-                    Collections.sort(datapoints, Comparator.comparing(Datapoint::getService));
-                    if(sorting.toString().equals("descending"))
-                        Collections.reverse(datapoints);
-                    break;
-                case "Limit":
-                    Collections.sort(datapoints, Comparator.comparing(Datapoint::getLimit));
-                    if(sorting.toString().equals("descending"))
-                        Collections.reverse(datapoints);
-                    break;
-                case "Used":
-                    datapoints.sort(Comparator.comparing(Datapoint::getIntegerUsed));
-                    if(sorting.toString().equals("descending"))
-                        Collections.reverse(datapoints);
-                    break;
-                case "Max":
-                    datapoints.sort(Comparator.comparing(Datapoint::getIntegerMax));
-                    if(sorting.toString().equals("descending"))
-                        Collections.reverse(datapoints);
-                    break;
-                case "Usage":
-                    Collections.sort(datapoints, Comparator.comparingDouble(d -> Double.parseDouble(d.getUsage())));
-                    if(sorting.toString().equals("descending"))
-                        Collections.reverse(datapoints);
-                    break;
-                default:
-                    break;
-            }
+        return datapoints;
+    }
+
+    public Table getDatapointsTable(JsonNode parameters) {
+
+        Integer totalNumberOfItems;
+        Table table = new Table();
+        List<Map<String, Object>> list = new ArrayList<>();
+        List<Datapoint> datapoints;
+
+        QueryParameter queryParameters = new QueryParameter(parameters).invoke();
+
+        datapoints = filterDataPoints(queryParameters);
+
+        if (!queryParameters.getSorting().equals("none") && !queryParameters.getColumn().equals("none")) {
+            sortDataPoints(datapoints, queryParameters);
         }
 
         totalNumberOfItems = datapoints.size();
 
-        if (rowsPerPage == 0)
-            rowsPerPage = totalNumberOfItems;
+        if (queryParameters.getRowsPerPage() == 0)
+            queryParameters.setRowsPerPage(totalNumberOfItems);
 
-        if (pageNumber == 0)
-            pageNumber = 1;
+        if (queryParameters.getPageNumber() == 0)
+            queryParameters.setPageNumber(1);
 
         List<String> columnHeaders = new ArrayList<>();
         columnHeaders.add("Account Name");
@@ -265,8 +223,8 @@ public class AphelionService {
             }
             list.add(row);
         }
-        int startItem = (pageNumber == 1) ? 0 : ((pageNumber - 1) * rowsPerPage);
-        int endItem = (startItem + rowsPerPage > totalNumberOfItems) ? totalNumberOfItems : startItem + rowsPerPage;
+        int startItem = (queryParameters.getPageNumber() == 1) ? 0 : ((queryParameters.getPageNumber() - 1) * queryParameters.getRowsPerPage());
+        int endItem = (startItem + queryParameters.getRowsPerPage() > totalNumberOfItems) ? totalNumberOfItems : startItem + queryParameters.getRowsPerPage();
 
         table.setRows(list.subList(startItem, endItem));
         table.setItems(totalNumberOfItems);
@@ -295,75 +253,22 @@ public class AphelionService {
 
     public List getDatapointsTimeSeriesSampledata(JsonNode parameters) {
 
-        AtomicReference accountName = new AtomicReference();
-        AtomicReference rangeTimeStamp = new AtomicReference();
-        AtomicReference region = new AtomicReference();
         List<Datapoint> datapoints;
-        String key;
-        String range = null;
-        String source;
-
         Timeseries timeseries = new Timeseries();
+        QueryParameter queryParameter = new QueryParameter(parameters).invoke();
 
-        try {
-            source = parameters.get("parameters").get("source").asText("latest");
-        } catch (Exception e) {
-            source = "latest";
-        }
-        try {
-            range = (parameters.get("range").get("to").asText("1"));
-            rangeTimeStamp.set(this.formatToUnixTime(range));
-        } catch (Exception e) {
-            range = "1";
-        }
+        datapoints = filterDataPoints(queryParameter);
 
-        try {
-            accountName.set(parameters.get("parameters").get("accountName").asText("ALL"));
-        } catch (Exception e) {
-            accountName.set("ALL");
-        }
-
-        try {
-            key = parameters.get("parameters").get("key").asText("null");
-        } catch (Exception e) {
-            key = "null";
-        }
-
-        try {
-            region.set(parameters.get("parameters").get("region").asText("-"));
-        } catch (Exception e) {
-            region.set("-");
-        }
-
-        datapoints = getDataPoints(source)
-                .stream()
-                .sorted((a, b) -> b.compareTo(a))
-                .collect(Collectors.toList());
-
-        if (!accountName.toString().equals("ALL") && !accountName.toString().equals("$__all") && accountName != null) {
-            datapoints = datapoints
-                    .stream()
-                    .filter(x -> x.getAccountId().equals(accountName.toString()))
-                    .collect(Collectors.toList());
-        }
-
-        if (!region.toString().equals("-") && !region.toString().equals("$__all") && region != null) {
-            datapoints = datapoints
-                    .stream()
-                    .filter(x -> x.getRegion().equals(region.toString()))
-                    .collect(Collectors.toList());
-        }
-
-        if (key.equals("total")) {
+        if (queryParameter.getKey().equals("total")) {
             Integer total = datapoints.size();
             TimeSeriesPoint point = new TimeSeriesPoint();
-            point.setTarget(accountName.toString());
+            point.setTarget(queryParameter.getAccountName());
             point.setDatapoints(Arrays.asList(Arrays.asList(total, 1)));
             timeseries.setResults(Arrays.asList(point));
-        } else if (key.contains("gt") && key.contains("lt")) {
+        } else if (queryParameter.getKey().contains("gt") && queryParameter.getKey().contains("lt")) {
             AtomicInteger lessThanValue = new AtomicInteger(0);
             AtomicInteger greaterThanValue = new AtomicInteger(0);
-            String[] splitValues = key.split("&");
+            String[] splitValues = queryParameter.getKey().split("&");
             for(String split : splitValues){
                 try {
                     if(split.contains("lt")) {
@@ -382,13 +287,13 @@ public class AphelionService {
                     .count();
 
             TimeSeriesPoint point = new TimeSeriesPoint();
-            point.setTarget(accountName.toString());
+            point.setTarget(queryParameter.getAccountName());
             point.setDatapoints(Arrays.asList(Arrays.asList(total, 1)));
             timeseries.setResults(Arrays.asList(point));
-        } else if (key.contains("gt")) {
+        } else if (queryParameter.getKey().contains("gt")) {
             AtomicInteger value = new AtomicInteger(0);
             try {
-                value.getAndSet(Integer.parseInt(key.split("=")[1]));
+                value.getAndSet(Integer.parseInt(queryParameter.getKey().split("=")[1]));
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -398,13 +303,13 @@ public class AphelionService {
                     .count();
 
             TimeSeriesPoint point = new TimeSeriesPoint();
-            point.setTarget(accountName.toString());
+            point.setTarget(queryParameter.getAccountName());
             point.setDatapoints(Arrays.asList(Arrays.asList(total, 1)));
             timeseries.setResults(Arrays.asList(point));
-        } else if (key.contains("lt")) {
+        } else if (queryParameter.getKey().contains("lt")) {
             AtomicInteger value = new AtomicInteger(0);
             try {
-                value.getAndSet(Integer.parseInt(key.split("=")[1]));
+                value.getAndSet(Integer.parseInt(queryParameter.getKey().split("=")[1]));
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -414,7 +319,7 @@ public class AphelionService {
                     .count();
 
             TimeSeriesPoint point = new TimeSeriesPoint();
-            point.setTarget(accountName.toString());
+            point.setTarget(queryParameter.getAccountName());
             point.setDatapoints(Arrays.asList(Arrays.asList(total, 1)));
             timeseries.setResults(Arrays.asList(point));
         } else {
@@ -423,7 +328,7 @@ public class AphelionService {
                     .map(x -> {
                         TimeSeriesPoint point = new TimeSeriesPoint();
                         point.setTarget(x.getService() + " " + x.getLimit());
-                        point.setDatapoints(Arrays.asList(Arrays.asList(Integer.parseInt(x.usage), rangeTimeStamp)));
+                        point.setDatapoints(Arrays.asList(Arrays.asList(Integer.parseInt(x.usage), queryParameter.getRangeTimeStamp())));
                         return point;
                     }).collect(Collectors.toList()));
         }
@@ -470,49 +375,11 @@ public class AphelionService {
 
     public BarChart getBarchart(JsonNode parameters) {
         BarChart barChart = new BarChart();
-        AtomicReference accountName = new AtomicReference();
-        AtomicReference region = new AtomicReference();
-        AtomicReference selected = new AtomicReference();
         List<Datapoint> datapoints;
         AtomicInteger index = new AtomicInteger();
-        String source;
+        QueryParameter queryParameters = new QueryParameter(parameters).invoke();
 
-        try {
-            source = parameters.get("parameters").get("source").asText("latest");
-        } catch (Exception e) {
-            source = "latest";
-        }
-
-        try {
-            accountName.set(parameters.get("parameters").get("accountName").asText("$__all"));
-        } catch (Exception e) {
-            accountName.set("$__all");
-        }
-
-        try {
-            region.set(parameters.get("parameters").get("region").asText("-"));
-        } catch (Exception e) {
-            region.set("-");
-        }
-
-        datapoints = getDataPoints(source)
-                .stream()
-                .sorted((a, b) -> b.compareTo(a))
-                .collect(Collectors.toList());
-
-        if (!accountName.toString().equals("ALL") && !accountName.toString().equals("$__all") && accountName != null) {
-            datapoints = datapoints
-                    .stream()
-                    .filter(x -> x.getAccountId().equals(accountName.toString()))
-                    .collect(Collectors.toList());
-        }
-
-        if (!region.toString().equals("-") && !region.toString().equals("$__all") && region != null) {
-            datapoints = datapoints
-                    .stream()
-                    .filter(x -> x.getRegion().equals(region.toString()))
-                    .collect(Collectors.toList());
-        }
+        datapoints = filterDataPoints(queryParameters);
 
         barChart.setSeries(datapoints
                 .stream()
@@ -608,14 +475,5 @@ public class AphelionService {
         }
 
         return results;
-    }
-
-    private Long formatToUnixTime(String date)
-    {
-        /*
-            2016-10-18T13:16:33.733Z
-        */
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
-        return LocalDateTime.parse(date, formatter).toInstant(ZoneOffset.UTC).toEpochMilli();
     }
 }
