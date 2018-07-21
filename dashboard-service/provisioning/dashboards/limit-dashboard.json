@@ -107,7 +107,7 @@
               "field": "key",
               "name": "key",
               "type": "string",
-              "value": "lt=80"
+              "value": "lt=75"
             }
           ]
         }
@@ -297,7 +297,7 @@
         }
       ],
       "thresholds": "",
-      "title": "Exceeding",
+      "title": "Danger",
       "type": "singlestat",
       "valueFontSize": "80%",
       "valueMaps": [
