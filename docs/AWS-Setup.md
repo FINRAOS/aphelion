@@ -41,6 +41,7 @@ The IAM role in each account must contain proper permissions to collect the data
         "codedeploy:Get*",
         "codedeploy:List*",
         "directconnect:Describe*",
+        "dms:DescribeAccountAttributes",
         "dynamodb:Query",
         "dynamodb:DescribeTable",
         "dynamodb:ListTables",
