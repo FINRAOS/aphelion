@@ -16,6 +16,8 @@ target account. That target role must have permissions necessary to list or
 describe the resources that are being inspected, as well as issue a TA refresh
 and get a TA report.
 
+Aphelion requires AWS Premium Support Subscription in order to programmatically call [AWS trusted advisor](https://aws.amazon.com/premiumsupport/technology/trusted-advisor/).
+
 ## Configure
 Aphelion requires the following properties to be set in order to run.
 
