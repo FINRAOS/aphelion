@@ -12,8 +12,11 @@ limits for most of the AWS resources where the limit is either in TA, or
 the particular service exposes the current limit values via API calls.
 
 ## Features
-- View dashboard with limits and usage for all of your AWS accounts
-- Filter dashboard display by Account number
-- Filter dashboard display by Region
-- Highlight services that are reaching max limit
-- Download CSV report
+* View dashboard with limits and usage for all of your AWS accounts
+* Filter dashboard display by Account number
+* Filter dashboard display by Region
+* Highlight services that are reaching max limit
+    * Healthy <75%
+    * Warning >=75% & <80%
+    * Danger >=80%
+* Download CSV report

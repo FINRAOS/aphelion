@@ -37,6 +37,7 @@ IAM must contain proper permissions to obtain create limits report.
         "codedeploy:Get*",
         "codedeploy:List*",
         "directconnect:Describe*",
+        "dms:DescribeAccountAttributes",
         "dynamodb:Query",
         "dynamodb:DescribeTable",
         "dynamodb:ListTables",
