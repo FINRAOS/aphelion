@@ -55,7 +55,7 @@ class AphelionController {
     @GetMapping("/datapoints")
     @ResponseBody
     public List<Datapoint> getDataPoints() {
-        return aphelionService.getDataPoints();
+        return aphelionService.getDataPoints(null);
     }
 
     @GetMapping("/datapoints/health")
@@ -148,6 +148,24 @@ class AphelionController {
         return aphelionService.getAllRegions();
     }
 
+    @GetMapping("/datapoints/source/{key}/metadata/**")
+    @ResponseBody
+    public Metadata getSourceMetadata() {
+        return aphelionService.getAllSourceFilesMetadata();
+    }
+
+    @GetMapping("/datapoints/source/sampledata")
+    @ResponseBody
+    public List<Checkbox> getSource() {
+        return aphelionService.getAllSourceFiles();
+    }
+
+    @PostMapping("/datapoints/source/{key}/query/**")
+    @ResponseBody
+    public List<Checkbox> getSourceQuery() {
+        return aphelionService.getAllSourceFiles();
+    }
+
     @GetMapping("/datapoints/barchart/health")
     @ResponseBody
     public String getBarchartHealth() {
@@ -173,9 +191,14 @@ class AphelionController {
     }
 
     @GetMapping(value = "/datapoints/csv", produces = "text/csv")
-    public FileSystemResource getCsv(HttpServletResponse response){
-        FileSystemResource csv = new FileSystemResource(csvService.getLatestCSVFileName());
-        response.setHeader("Content-Disposition", "attachment; filename="+csv.getFilename());
-        return csv;
+    public FileSystemResource getCsv(@RequestParam(value = "source", required = false) String source, HttpServletResponse response){
+
+        try {
+            FileSystemResource csv = new FileSystemResource(csvService.getLatestCSVFileName(source));
+            response.setHeader("Content-Disposition", "attachment; filename=" + csv.getFilename());
+            return csv;
+        } catch (Exception e){
+            return null;
+        }
     }
 }
