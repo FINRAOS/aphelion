@@ -19,6 +19,8 @@ import csv
 import get_role_session
 import datetime
 import os
+import sys
+import traceback
 
 #load environment configurations and get values we need
 role_name = os.environ.get('ASSUMED_ROLE_NAME', None)
@@ -48,48 +50,53 @@ for account_id in account_list:
     account_out = {'id': account_id}
     all_limits = []
     #get boto3 session for the account
-    sess = get_role_session.get_role_session(account_id, role_name, role_session_name)
-    #instance_types = defaultdict(int)
-    for region in regions:
-        #get total EC2 instances since TA does not check TOTAL on-demand instances, only by instance type
-        total_instances = 0
-        ec2 = sess.resource('ec2', region_name=region)
-        for instance in ec2.instances.page_size(count=100):
-            if instance.instance_lifecycle != 'spot':
-                #instance_types["%s %s" % (region,instance.instance_type)] += 1
-                total_instances += 1
-        #and check that coutn against the configured limit from EC2
-        ec2c = sess.client('ec2', region_name=region)
-        attributes = ec2c.describe_account_attributes(AttributeNames=['max-instances'])
-        all_limits.append({'region':region, 'service':'EC2', 'limit':'Max On-Demand Instances', 'max':attributes['AccountAttributes'][0]['AttributeValues'][0]['AttributeValue'], 'used':total_instances})
+    try:
+        sess = get_role_session.get_role_session(account_id, role_name, role_session_name)
+        #instance_types = defaultdict(int)
+        for region in regions:
+            #get total EC2 instances since TA does not check TOTAL on-demand instances, only by instance type
+            total_instances = 0
+            ec2 = sess.resource('ec2', region_name=region)
+            for instance in ec2.instances.page_size(count=100):
+                if instance.instance_lifecycle != 'spot':
+                    #instance_types["%s %s" % (region,instance.instance_type)] += 1
+                    total_instances += 1
+            #and check that coutn against the configured limit from EC2
+            ec2c = sess.client('ec2', region_name=region)
+            attributes = ec2c.describe_account_attributes(AttributeNames=['max-instances'])
+            all_limits.append({'region':region, 'service':'EC2', 'limit':'Max On-Demand Instances', 'max':attributes['AccountAttributes'][0]['AttributeValues'][0]['AttributeValue'], 'used':total_instances})
 
-        #inspect DMS resources and limits
-        dms = sess.client('dms', region_name=region)
-        dms_limits = dms.describe_account_attributes()
-        for dms_limit in dms_limits['AccountQuotas']:
-            all_limits.append({'region':region, 'service':'DMS', 'limit':dms_limit['AccountQuotaName'], 'max':dms_limit['Max'], 'used':dms_limit['Used']})
+            #inspect DMS resources and limits
+            dms = sess.client('dms', region_name=region)
+            dms_limits = dms.describe_account_attributes()
+            for dms_limit in dms_limits['AccountQuotas']:
+                all_limits.append({'region':region, 'service':'DMS', 'limit':dms_limit['AccountQuotaName'], 'max':dms_limit['Max'], 'used':dms_limit['Used']})
 
-    #start the check from trusted advisor. remember that the check needs to be refreshed, so that should have been run at least an hour before hand
-    # this is only run once per account since TA is global.        
-    support = sess.client('support')
-    ta_resp = support.describe_trusted_advisor_check_result(checkId = 'eW7HH0l7J9', language='en')
-    #walk the list of TA resources, and add them to the master list if valid
-    if 'flaggedResources' in ta_resp['result']:
-        for limit in ta_resp['result']['flaggedResources']:
-            limit_dict = ta_limit_to_dict(limit['metadata'])
-            if limit_dict != None:
-                all_limits.append(limit_dict)
-    account_out['limits'] = all_limits
-    report_out.append(account_out)
+        #start the check from trusted advisor. remember that the check needs to be refreshed, so that should have been run at least an hour before hand
+        # this is only run once per account since TA is global.
+        support = sess.client('support')
+        ta_resp = support.describe_trusted_advisor_check_result(checkId = 'eW7HH0l7J9', language='en')
+        #walk the list of TA resources, and add them to the master list if valid
+        if 'flaggedResources' in ta_resp['result']:
+            for limit in ta_resp['result']['flaggedResources']:
+                limit_dict = ta_limit_to_dict(limit['metadata'])
+                if limit_dict != None:
+                    all_limits.append(limit_dict)
+        account_out['limits'] = all_limits
+        report_out.append(account_out)
 
-headers = ['AccountID','Region','Service','Limit','Used','Max','% Usage']
-csvfile = open('/opt/staging/limits/' + now + report_filename, 'w')
-csvwriter = csv.writer(csvfile, quoting=csv.QUOTE_ALL)
+        headers = ['AccountID','Region','Service','Limit','Used','Max','% Usage']
+        csvfile = open('/opt/staging/limits/' + now + report_filename, 'w')
+        csvwriter = csv.writer(csvfile, quoting=csv.QUOTE_ALL)
 
-csvwriter.writerow(headers)
-for account in report_out:
-    for limit in sorted(account['limits'], key=lambda x: str(x['region']) + str(x['service']) + str(x['limit'])):
-        csvwriter.writerow([account['id'],limit['region'], limit['service'], limit['limit'], limit['used'], limit['max'], 
-            str(int(float(limit['used'])/float(limit['max'])*100)) + '%'])
-
-
+        csvwriter.writerow(headers)
+        for account in report_out:
+            for limit in sorted(account['limits'], key=lambda x: str(x['region']) + str(x['service']) + str(x['limit'])):
+                csvwriter.writerow([account['id'],limit['region'], limit['service'], limit['limit'], limit['used'], limit['max'],
+                                    str(int(float(limit['used'])/float(limit['max'])*100)) + '%'])
+    except Exception:
+        print("Unexpected error:", sys.exc_info()[0])
+        csvfile = open('/opt/staging/limits/' + now + report_filename, 'w')
+        csvwriter = csv.writer(csvfile, quoting=csv.QUOTE_ALL)
+        csvwriter.writerow(["ERROR", traceback.format_exc()])
+        raise

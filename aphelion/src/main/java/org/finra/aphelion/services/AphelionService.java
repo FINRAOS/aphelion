@@ -58,7 +58,7 @@ public class AphelionService {
             .refreshAfterWrite(1, TimeUnit.MINUTES)
             .build(new CacheLoader<String, List<Datapoint>>() {
                 @Override
-                public List<Datapoint> load(String source)  {
+                public List<Datapoint> load(String source) throws Exception  {
                     return loadDataPoints(source);
                 }
             });
@@ -68,7 +68,7 @@ public class AphelionService {
         return datapoints.getUnchecked(source);
     }
 
-    private List<Datapoint> loadDataPoints(String source) {
+    private List<Datapoint> loadDataPoints(String source) throws Exception {
         logger.info("Loaded datapoints " + source);
 
         Pattern pattern = Pattern.compile(",");
@@ -78,24 +78,36 @@ public class AphelionService {
         if(in == null)
             throw new NullPointerException("CSV file not found. CSV file might have not been created yet. Try running limits.py again or check: /var/log/cron.log");
 
+        String message = in
+                .lines()
+                .collect(Collectors.joining());
+
+        if(message.contains("ERROR")){
+            logger.error(message);
+            throw new Exception(message);
+        }
+
+        // return stream to top of file
+        in = csvService.getCsv(source);
+
         List<Datapoint> datapoints = in
                 .lines()
                 .skip(1)
                 .map(line -> {
                     String[] x = pattern.split(line);
                     try {
-                        return new Datapoint(
-                                null,
-                                x[0].substring(1, x[0].length() - 1),
-                                x[1].substring(1, x[1].length() - 1),
-                                x[2].substring(1, x[2].length() - 1),
-                                x[3].substring(1, x[3].length() - 1),
-                                x[4].substring(1, x[4].length() - 1),
-                                x[5].substring(1, x[5].length() - 1),
-                                x[6].substring(1, x[6].length() - 2),
-                                "false");
-                    } catch (Exception e) {
-                        e.printStackTrace();
+                         return new Datapoint(
+                                    null,
+                                    x[0].substring(1, x[0].length() - 1),
+                                    x[1].substring(1, x[1].length() - 1),
+                                    x[2].substring(1, x[2].length() - 1),
+                                    x[3].substring(1, x[3].length() - 1),
+                                    x[4].substring(1, x[4].length() - 1),
+                                    x[5].substring(1, x[5].length() - 1),
+                                    x[6].substring(1, x[6].length() - 2),
+                                    "false");
+                        } catch (Exception e) {
+//                        logger.error(e);
                         return new Datapoint();
                     }
                 })
