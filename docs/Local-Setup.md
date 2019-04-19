@@ -22,16 +22,23 @@ Aphelion requires AWS Premium Support Subscription in order to programmatically 
 Aphelion requires the following properties to be set in order to run.
 
 ### Environment Variables
-| Name                      | Description                                                                                                                           | Example                                                    |
-|---------------------------|---------------------------------------------------------------------------------------------------------------------------------------|------------------------------------------------------------|
-| ASSUMED_ROLE_NAME         | The name of the role to assume to inspect an account. This needs to be the same across all target accounts                            | assumed_role_name                                          |
-| ASSUMED_ROLE_SESSION_NAME | Role session name to pass when assuming the role                                                                                      | limit_dashboard |
-| ACCOUNT_ID_LIST           | Comma separated list of account IDs to interrogate. Will accept with or without leading and/or trailing spaces                        | 1234567891011, 1234567891012, 1234567891013, 1234567891014                                            |
-| REGIONS                   | Regions of interest. TA limits not in this list will be dropped, and non TA limit checks will only be performed in the regions listed | us-east-1, us-east-2                                       |
-| REPORT_FILE_NAME          | Name of the CSV file to create with the results                                                                                       | limits.csv                                                 |
-| CRON_REFRESH              | Cron schedule to run limits-refresh.  Must run about an hour before CRON_LIMITS                                                       | 0 2 * * *                                                  |
-| CRON_LIMITS               | Cron schedule to run limits report.                                                                                                   | 0 3 * * *                                                  |
-| AWS_DEFAULT_REGION        | AWS Default Region                                                                                                                    | us-east-1                                                  |
+| Name                      | Description                                                                                                                                                    | Example                                                    |
+|---------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------|------------------------------------------------------------|
+| ASSUMED_ROLE_NAME         | The name of the role to assume to inspect an account. This needs to be the same across all target accounts                                                     | assumed_role_name                                          |
+| ASSUMED_ROLE_SESSION_NAME | Role session name to pass when assuming the role                                                                                                               | limit_dashboard                                            |
+| ACCOUNT_ID_LIST           | Comma separated list of account IDs to interrogate. Will accept with or without leading and/or trailing spaces                                                 | 1234567891011, 1234567891012, 1234567891013, 1234567891014 |
+| REGIONS                   | Regions of interest. TA limits not in this list will be dropped, and non TA limit checks will only be performed in the regions listed                          | us-east-1, us-east-2                                       |
+| REPORT_FILE_NAME          | Name of the CSV file to create with the results                                                                                                                | limits.csv                                                 |
+| CRON_REFRESH              | Cron schedule to run limits-refresh.  Must run about an hour before CRON_LIMITS                                                                                | 0 2 * * *                                                  |
+| CRON_LIMITS               | Cron schedule to run limits report.                                                                                                                            | 0 3 * * *                                                  |
+| AWS_DEFAULT_REGION        | AWS Default Region                                                                                                                                             | us-east-1                                                  |
+| MAIL_REPORTING_LIMIT      | Limit that will trigger email to be sent when generating report. Can be empty to indicate that no email should be sent. Can be set to 0 to email every report. | 80                                                         |
+| MAIL_SENDER               | Email address of the sender for the report                                                                                                                     | APHELION@company.com                                       |
+| MAIL_SUBJECT              | Email subject of the report                                                                                                                                    | AWS Limits reached                                         |
+| MAIL_RECEIVERS            | Comma separated email list of receivers for the report                                                                                                         | user1@company.com, user2@company.com                       |
+| MAIL_HOST                 | Email host                                                                                                                                                     | smtp                                                       |
+| MAIL_PORT                 | Port to send email                                                                                                                                             | 25                                                         |
+| MAIL_MESSAGE              | Message that will be sent along the report attachment                                                                                                          | Aphelion AWS limits auto generated report                  |
 
 ### Docker Compose Example
 
@@ -49,12 +56,19 @@ services:
       - CRON_REFRESH=* * * * *
       - CRON_LIMITS=* * * * *
       - AWS_DEFAULT_REGION=us-east-1
+      - MAIL_REPORTING_LIMIT=80
+      - MAIL_SENDER=APHELION@company.com
+      - MAIL_SUBJECT=Limits Reached
+      - MAIL_RECEIVERS=user1@company.com, user2@company.com
+      - MAIL_HOST=smtp
+      - MAIL_PORT=25
+      - MAIL_MESSAGE=Aphelion AWS limits auto generated report
     volumes:
        - /Users/$USER/.aws:/root/.aws
   dashboard-service:
-    image: finraos/aphelion-dashboard-service
+    image: finraos/aphelion-dashboard-service:latest
   web:
-    image: finraos/aphelion-web
+    image: finraos/aphelion-web:latest
     ports:
       - 443:8443
     restart: always
