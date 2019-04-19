@@ -4,6 +4,7 @@ RUN apt-get update
 RUN apt-get install openssl
 
 ADD index.html /usr/share/nginx/html
+ADD favicon.ico /usr/share/nginx/html
 ADD nginx.conf /etc/nginx/nginx.conf
 
 RUN mkdir -p /etc/pki/tls/private

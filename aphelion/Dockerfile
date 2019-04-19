@@ -1,7 +1,8 @@
-FROM amazonlinux:latest
+FROM amazonlinux:2.0.20190228-with-sources
 
 ENV JAVA_OPTS="-XX:+UnlockExperimentalVMOptions -XX:+UseCGroupMemoryLimitForHeap  -XX:MaxRAMFraction=1 -XshowSettings:vm "
 
+RUN amazon-linux-extras install epel
 RUN yum install -y epel-release
 RUN yum install -y --nogpgcheck java-1.8.0-openjdk.x86_64
 RUN yum -y install python34-pip
