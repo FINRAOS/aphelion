@@ -1,0 +1,110 @@
+# Java Maven CircleCI 2.0 configuration file
+#
+# Check https://circleci.com/docs/2.0/language-java/ for more details
+#
+version: 2.1
+jobs:
+  build_and_push_apelion-service:
+    docker:
+      - image: circleci/openjdk:8u171-jdk
+    working_directory: ~/repo
+    environment:
+      MAVEN_OPTS: -Xmx3200m
+    steps:
+      - checkout
+      - restore_cache:
+          keys:
+            # when lock file changes, use increasingly general patterns to restore cache
+            - maven-repo-{{ .Branch }}-{{ checksum "aphelion/pom.xml" }}
+            - maven-repo-{{ .Branch }}-
+            - maven-repo
+      - run:
+          name: Run Tests and Build Backend Services
+          command: |
+            pushd aphelion
+            mvn clean package
+      - save_cache:
+          paths:
+            - ~/.m2
+          key: maven-repo-{{ .Branch }}-{{ checksum "aphelion/pom.xml" }}
+      - run:
+          name: Save Tests
+          command: |
+            mkdir -p ~/junit
+            find . -type f -regex ".*/target/surefire-reports/.*xml" -exec cp {} ~/junit/ \;
+      - store_test_results:
+          path: ~/junit
+      - save_cache:
+          key: aphelion-{{ .Branch }}-{{ epoch }}
+          paths:
+              - aphelion/target/aphelion-1.0.jar
+      - run:
+          name: Build Aphelion service
+          command: |
+            cd aphelion
+            docker build -t aphelion/aphelion-service ./
+      - run:
+          name: Push Aphelion dservice to docker repo
+          command: |
+            source .circleci/push.sh aphelion/aphelion-service aphelion-service
+  build_and_push_dashboard-service:
+    working_directory: ~/repo
+    docker:
+      - image: docker:17.05.0-ce-git
+    steps:
+      - checkout
+      - setup_remote_docker
+      - run:
+          name: Build dashboard-service
+          command: |
+            cd dashboard-service
+            docker build -t aphelion/aphelion-dashboard-service ./
+      - run:
+          name: Push Aphelion dashboard-service to docker repo
+          command: |
+            source .circleci/push.sh aphelion/aphelion-dashboard-service aphelion-dashboard-service
+  build_and_push_web:
+    working_directory: ~/repo
+    docker:
+      - image: docker:17.05.0-ce-git
+    steps:
+      - checkout
+      - setup_remote_docker
+      - run:
+          name: Build web-service
+          command: |
+            cd web
+            docker build -t aphelion/aphelion-web ./
+      - run:
+          name: Push Aphelion web-service to docker repo
+          command: |
+            source .circleci/push.sh aphelion/aphelion-web aphelion-web
+
+workflows:
+  version: 2.1
+  ci-push:
+    jobs:
+      - build_and_push_dashboard-service
+      - build_and_push_web
+      - build_and_push_apelion-service
+
+  tag-and-release:
+    jobs:
+      - build_and_push_dashboard-service:
+          filters:
+            tags:
+              only: /^v.*/
+            branches:
+              ignore: /.*/
+      - build_and_push_web:
+          filters:
+            tags:
+              only: /^v.*/
+            branches:
+              ignore: /.*/
+      - build_and_push_apelion-service:
+          filters:
+            tags:
+              only: /^v.*/
+            branches:
+              ignore: /.*/
