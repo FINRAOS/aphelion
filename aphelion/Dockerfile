@@ -1,11 +1,13 @@
-FROM amazonlinux:2.0.20190228-with-sources
+FROM amazonlinux:2-with-sources
+
+ARG jar_file
 
 ENV JAVA_OPTS="-XX:+UnlockExperimentalVMOptions -XX:+UseCGroupMemoryLimitForHeap  -XX:MaxRAMFraction=1 -XshowSettings:vm "
 
 RUN amazon-linux-extras install epel
 RUN yum install -y epel-release
 RUN yum install -y --nogpgcheck java-1.8.0-openjdk.x86_64
-RUN yum -y install python34-pip
+RUN yum -y install python3-pip
 RUN yum -y install cronie
 RUN python3 -m pip install boto3
 RUN python3 -m pip install awscli
@@ -14,7 +16,8 @@ RUN mkdir -p /opt/staging/limits
 RUN mkdir -p /etc/cron.d
 
 ADD deploy/limits/limits-cron /etc/cron.d/limits-cron
-ADD target/*.jar /opt/staging
+ADD target/${jar_file} /opt/staging
+
 ADD deploy/startup.sh /opt/staging
 ADD deploy/limits /opt/staging
 

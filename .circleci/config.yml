@@ -4,7 +4,7 @@
 #
 version: 2.1
 jobs:
-  build_and_push_apelion-service:
+  build_aphelion-service:
     docker:
       - image: circleci/openjdk:8u171-jdk
     working_directory: ~/repo
@@ -12,6 +12,7 @@ jobs:
       MAVEN_OPTS: -Xmx3200m
     steps:
       - checkout
+      - setup_remote_docker
       - restore_cache:
           keys:
             # when lock file changes, use increasingly general patterns to restore cache
@@ -39,14 +40,18 @@ jobs:
           paths:
               - aphelion/target/aphelion-1.0.jar
       - run:
-          name: Build Aphelion service
+          name: Build Aphelion service container
           command: |
+            ls -ltr
             cd aphelion
-            docker build -t aphelion/aphelion-service ./
+            ls -ltr
+            docker build --build-arg jar_file=aphelion-1.0.jar -t aphelion/aphelion-service ./
+            docker images
       - run:
-          name: Push Aphelion dservice to docker repo
+          name: Push Aphelion service to docker repo
           command: |
             source .circleci/push.sh aphelion/aphelion-service aphelion-service
+
   build_and_push_dashboard-service:
     working_directory: ~/repo
     docker:
@@ -86,7 +91,8 @@ workflows:
     jobs:
       - build_and_push_dashboard-service
       - build_and_push_web
-      - build_and_push_apelion-service
+      - build_aphelion-service
+
 
   tag-and-release:
     jobs:
@@ -102,7 +108,7 @@ workflows:
               only: /^v.*/
             branches:
               ignore: /.*/
-      - build_and_push_apelion-service:
+      - build_aphelion-service:
           filters:
             tags:
               only: /^v.*/

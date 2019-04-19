@@ -49,7 +49,7 @@ def send_mail_attachment(message, attachment):
     # Create headers
     msg['Subject'] = subject
     msg['From'] = sender
-    msg['To'] = receivers
+    msg['To'] = ";".join(receivers)
     part = MIMEBase('application', "octet-stream")
     # Attach attachment
     part.set_payload(open(attachment, "rb").read())
@@ -67,7 +67,7 @@ def send_mail(message):
     # Create headers
     msg['Subject'] = subject
     msg['From'] = sender
-    msg['To'] = receivers
+    msg['To'] = ";".join(receivers)
     # Attach message
     msg.attach(MIMEText(message, 'plain'))
     # Send it off
