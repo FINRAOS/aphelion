@@ -3,7 +3,7 @@
 ## What is Aphelion?
 Aphelion is a web application that captures and visualizes your AWS services usage limits.  It continuously collects data in the background and you can visualize the data in easy-to-see graphs and charts.
 
-[![Aphelion dashboard](docs/images/dashboard.png)](docs/images/dashboard.png)
+[![Aphelion dashboard](docs/images/dashboard.png)](docs/images/dashboard.png) [![Join the chat at https://gitter.im/FINRAOS/aphelion](https://badges.gitter.im/FINRAOS/aphelion.svg)](https://gitter.im/FINRAOS/aphelion?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
 ## Overview
 Aphelion is used to collect AWS limits across multiple accounts. It uses
