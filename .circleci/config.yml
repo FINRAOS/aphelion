@@ -92,8 +92,6 @@ workflows:
       - build_and_push_dashboard-service
       - build_and_push_web
       - build_aphelion-service
-
-
   tag-and-release:
     jobs:
       - build_and_push_dashboard-service:
