@@ -11,6 +11,13 @@ services:
       - REPORT_FILE_NAME=limits.csv
       - CRON_REFRESH=* * * * *
       - CRON_LIMITS=* * * * *
+      - MAIL_REPORTING_LIMIT=80
+      - MAIL_SENDER=APHELION@company.com
+      - MAIL_SUBJECT=Limits Reached
+      - MAIL_RECEIVERS=user1@company.com, user2@company.com
+      - MAIL_HOST=smtp
+      - MAIL_PORT=25
+      - MAIL_MESSAGE=Aphelion AWS limits auto generated report
   dashboard-service:
     image: finraos/aphelion-dashboard-service
   web:

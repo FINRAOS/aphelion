@@ -11,15 +11,32 @@ services:
       - REPORT_FILE_NAME=limits.csv
       - CRON_REFRESH=* * * * *
       - CRON_LIMITS=* * * * *
+      - MAIL_REPORTING_LIMIT=80
+      - MAIL_SENDER=APHELION@company.com
+      - MAIL_SUBJECT=Limits Reached
+      - MAIL_RECEIVERS=user1@company.com, user2@company.com
+      - MAIL_HOST=smtp
+      - MAIL_PORT=25
+      - MAIL_MESSAGE=Aphelion AWS limits auto generated report
     volumes:
        - /Users/$USER/.aws:/root/.aws
+    links:
+       - smtp
   dashboard-service:
-    image: finraos/aphelion-dashboard-service
+    image: finraos/aphelion-dashboard-service:latest
   web:
-    image: finraos/aphelion-web
+    image: finraos/aphelion-web:latest
     ports:
       - 443:8443
     restart: always
     links:
-     - dashboard-service
-     - aphelion-service
+      - dashboard-service
+      - aphelion-service
+  smtp:
+     container_name: aphelion_local_smtp
+     image: amontaigu/fakesmtp
+     ports:
+      - 25
+     mem_limit: 50m
+     volumes:
+      - /Users/$USER/mail:/var/mail

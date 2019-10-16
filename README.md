@@ -22,6 +22,8 @@ the particular service exposes the current limit values via API calls.
   - Warning >=75% & <80%
   - Danger >=80%
 - Download CSV report
+- Email CSV report after reaching a configurable limit
+
 
 ## Documentation
 - [Overview](docs/index.md)
