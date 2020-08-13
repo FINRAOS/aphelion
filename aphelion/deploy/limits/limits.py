@@ -77,27 +77,31 @@ def send_mail(message):
 
 #do some "formatting" of the limits collected by TA, as well as drop limits with no usage
 def ta_limit_to_dict(limit):
-    #extract values into dictionary
-    limit_dict = {'region':limit[0], 'service':limit[1], 'limit':limit[2], 'max':limit[3], 'used':limit[4]}
-    #omit entries for regions we're not interested in
+    limit_dict = {'region': limit[0],
+                  'service': limit[1],
+                  'limit': limit[2],
+                  'max': limit[3],
+                  'used': limit[4]}
+
     if limit_dict['region'] not in regions + ['-']:
         return None
-    #ignore unused resources
-    if limit_dict['used'] in [ '0', 0, None]:
-        return None
+    if limit_dict['service'] == 'EC2' and limit_dict['limit'].startswith('On-Demand instances -'):
+        limit_dict['used'] = 0
+        type_lookup = '%s %s' % (limit_dict['region'], limit_dict['limit'].split(' ')[3])
+    if limit_dict['used'] == None:
+        limit_dict['used'] = 0
     return limit_dict
 
 report_out = []
 
 for account_id in account_list:
-    #account_name = account['name']
-    #account_id = account['account_id']
     account_out = {'id': account_id}
     all_limits = []
     #get boto3 session for the account
     try:
         sess = get_role_session.get_role_session(account_id, role_name, role_session_name)
         #instance_types = defaultdict(int)
+
         for region in regions:
             #get total EC2 instances since TA does not check TOTAL on-demand instances, only by instance type
             total_instances = 0
@@ -117,16 +121,23 @@ for account_id in account_list:
             for dms_limit in dms_limits['AccountQuotas']:
                 all_limits.append({'region':region, 'service':'DMS', 'limit':dms_limit['AccountQuotaName'], 'max':dms_limit['Max'], 'used':dms_limit['Used']})
 
-        #start the check from trusted advisor. remember that the check needs to be refreshed, so that should have been run at least an hour before hand
+        # start the check from trusted advisor. remember that the check needs to be refreshed, so that should have been run at least an hour before hand
         # this is only run once per account since TA is global.
         support = sess.client('support')
-        ta_resp = support.describe_trusted_advisor_check_result(checkId = 'eW7HH0l7J9', language='en')
-        #walk the list of TA resources, and add them to the master list if valid
-        if 'flaggedResources' in ta_resp['result']:
-            for limit in ta_resp['result']['flaggedResources']:
-                limit_dict = ta_limit_to_dict(limit['metadata'])
-                if limit_dict != None:
-                    all_limits.append(limit_dict)
+        for check in support.describe_trusted_advisor_checks(language='en')['checks']:
+            if check['category'] == 'service_limits':
+                print("checking %s - %s" % (check['id'], check['name']))
+                try:
+                    ta_resp = support.describe_trusted_advisor_check_result(checkId = check['id'], language='en')
+                    if 'flaggedResources' in ta_resp['result']:
+                        for limit in ta_resp['result']['flaggedResources']:
+                            limit_dict = ta_limit_to_dict(limit['metadata'])
+                            if limit_dict != None:
+                                all_limits.append(limit_dict)
+                except:
+                    print("problem getting TA check for %s - %s" % (account_id, region))
+
+
         account_out['limits'] = all_limits
         report_out.append(account_out)
 

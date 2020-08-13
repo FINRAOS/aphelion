@@ -35,5 +35,6 @@ for account_id in account_list:
     #get an assumed role for the target account
     sess = get_role_session.get_role_session(account_id, role_name, role_session_name)
     support = sess.client('support')
-    support.refresh_trusted_advisor_check(checkId = 'eW7HH0l7J9')
-
+    for check in support.describe_trusted_advisor_checks(language='en')['checks']:
+        if check['category'] == 'service_limits':
+            print( "updating check %s - %s" % (check['id'], check['name']) )
